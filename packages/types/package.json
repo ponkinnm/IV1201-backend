@@ -1,0 +1,20 @@
+{
+  "name": "@iv1201-group3-2025/types",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Shared types for the IV1201 project",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}
