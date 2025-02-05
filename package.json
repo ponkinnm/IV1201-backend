@@ -4,7 +4,7 @@
   "description": "Hello",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "node -r ts-node/register src/index.ts",
     "dev": "nodemon src/index.ts",
     "build": "tsc"
   },
