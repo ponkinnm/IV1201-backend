@@ -1,14 +1,6 @@
-import { Pool } from 'pg';
-import dotenv from 'dotenv';
+import pool from './config/dbsetup';
 
-dotenv.config(); // Load environment variables
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false, // Required for Heroku Postgres
-  },
-});
-
-
-export default pool;
+export const getPersons = async () => {
+  const result = await pool.query('SELECT * FROM public.person');
+  return result.rows;
+};
