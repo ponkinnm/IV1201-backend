@@ -11,9 +11,9 @@ router.get('/hello', (req, res) => {
   res.send('Hello World');
 });
 
-router.get('/testing', async (req, res) => {
+router.get('/getApplications', async (req, res) => {
   try {
-    const persons = await db.getPersons();
+    const persons = await db.getApplications();
     res.json(persons);
   } catch (err) {
     console.error(err);
