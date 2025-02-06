@@ -15,3 +15,14 @@ export const getApplications = async () => {
   const result = await pool.query(query);
   return result.rows;
 };
+export const getCompetencies = async () => {
+    const query = `
+      SELECT 
+        competence_id,
+        name
+      FROM public.competence
+      ORDER BY name
+    `;
+    const result = await pool.query(query);
+    return result.rows;
+  };
