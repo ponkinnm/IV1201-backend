@@ -21,4 +21,14 @@ router.get('/getApplications', async (req, res) => {
   }
 });
 
+router.get('/getCompetencies', async (req, res) => {
+  try {
+    const competencies = await db.getCompetencies();
+    res.json(competencies);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+
 export default router;
