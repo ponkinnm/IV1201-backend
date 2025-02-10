@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "description": "Shared types for the IV1201 project",
+  "private": false,
   "publishConfig": {
     "access": "public"
   },
