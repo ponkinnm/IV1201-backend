@@ -1,0 +1,89 @@
+name: Publish Public Scoped Package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Needed to detect file changes
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Authenticate with NPM
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
+#      - name: Check for Changes in `packages/types`
+#        id: check_changes
+#        run: |
+#          if git diff --quiet HEAD^ HEAD -- packages/types; then
+#            echo "No changes in packages/types. Skipping publish."
+#            echo "should_publish=false" >> $GITHUB_ENV
+#          else
+#            echo "Changes detected in packages/types. Proceeding to publish."
+#            echo "should_publish=true" >> $GITHUB_ENV
+#          fi
+
+      - name: Install Dependencies
+        # if: env.should_publish == 'true'
+        run: |
+          cd packages/types
+          npm install
+
+#      - name: Check If Version Was Manually Updated
+#        if: env.should_publish == 'true'
+#        id: check_version
+#        run: |
+#          cd packages/types
+#          CURRENT_VERSION=$(jq -r .version package.json)
+#          PREV_VERSION=$(git show HEAD^:packages/types/package.json | jq -r .version)
+#
+#          echo "Current version: $CURRENT_VERSION"
+#          echo "Previous version: $PREV_VERSION"
+#
+#          if [ "$CURRENT_VERSION" != "$PREV_VERSION" ]; then
+#            echo "Version was manually updated. Skipping auto-increment."
+#            echo "auto_increment=false" >> $GITHUB_ENV
+#          else
+#            echo "Version was NOT manually updated. Proceeding with auto-increment."
+#            echo "auto_increment=true" >> $GITHUB_ENV
+#          fi
+
+#      - name: Auto-Increment Version (If Not Manually Updated)
+#        if: env.should_publish == 'true' && env.auto_increment == 'true'
+#        run: |
+#          cd packages/types
+#          npm version patch -m "chore: bump version to %s [skip ci]"
+#          echo "New version set."
+
+      - name: Build Package
+        # if: env.should_publish == 'true'
+        run: |
+          cd packages/types
+          npm run build
+
+      - name: Publish to NPM
+        # if: env.should_publish == 'true'
+        run: |
+          cd packages/types
+          npm publish --access=public
+
+      - name: Commit & Push Updated Version (If Auto-Incremented)
+        # if: env.should_publish == 'true' && env.auto_increment == 'true'
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add packages/types/package.json
+          git commit -m "chore: bump version [skip ci]" || echo "No changes to commit"
+          git push origin main
