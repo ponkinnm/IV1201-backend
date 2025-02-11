@@ -1,17 +1,18 @@
-import pool from './config/dbsetup';
+import sequelize from './config/dbsetup';
+import { Application, Competence, Person, Status } from './model'; 
 
 export const getApplications = async () => {
-  const query = `
-    SELECT 
-      p.person_id,
-      p.name,
-      p.surname,
-      p.email,
-      s.status_name
-    FROM public.person p
-    LEFT JOIN public.application a ON p.person_id = a.person_id
-    LEFT JOIN public.status s ON a.status_id = s.status_id
-  `;
-  const result = await pool.query(query);
-  return result.rows;
+  const applications = await Application.findAll({
+    include: [
+      { model: Person, attributes: ['person_id', 'name', 'surname', 'email'] },
+      { model: Status, attributes: ['status_name'] },
+    ],
+  });
+  return applications;
+};
+
+
+export const getStatus = async () => {
+  const status = await Competence.findAll();
+  return status;
 };
