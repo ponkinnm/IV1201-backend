@@ -4,10 +4,10 @@ import Person from './Person';
 import Status from './Status';
 
 class Application extends Model {
-  public application_id!: number;
-  public person_id!: number;
-  public status_id!: number;
-  public submitted_date!: Date;
+  declare application_id: number;
+  declare person_id: number;
+  declare status_id: number;
+  declare submitted_date: Date;
 }
 
 Application.init(
