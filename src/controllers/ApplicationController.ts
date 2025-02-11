@@ -18,4 +18,14 @@ export class ApplicationController {
             next(err);
         }
     }
+    login: RequestHandler = async (req, res, next) => {
+        try {
+            const { username, password } = req.body;
+            const user = await this.applicationService.login(username, password);
+            console.log(user)
+            res.json(user);
+        } catch (err) {
+            next(err);
+        }
+    }
 }

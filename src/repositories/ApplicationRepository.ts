@@ -18,4 +18,19 @@ export class ApplicationRepository implements IApplicationRepository {
         const result = await pool.query<Application>(query);
         return result.rows;
     };
+
+    async findUser(username: string, password: string) {
+      const query = `
+          SELECT 
+              p.person_id,
+              p.name,
+              p.surname,
+              p.email
+          FROM person p
+          WHERE p.username = $1 AND p.password = $2
+      `;
+      
+      const result = await pool.query(query, [username, password]);
+      return result.rows[0];
+  }
 }
