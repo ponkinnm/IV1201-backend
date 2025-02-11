@@ -1,5 +1,4 @@
 import { IApplicationRepository } from "../repositories/contracts/IApplicationRepository";
-import jwt from 'jsonwebtoken';
  import { generateToken } from '../middleware/auth/authMiddleware';
 
 
