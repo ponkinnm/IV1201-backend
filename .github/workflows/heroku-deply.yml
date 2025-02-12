@@ -25,6 +25,9 @@ jobs:
       - name: Compile TypeScript
         run: npm run build  
 
+      - name: Install Heroku CLI (Fix Missing Heroku Command)
+        run: curl https://cli-assets.heroku.com/install.sh | sh
+
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
@@ -32,3 +35,4 @@ jobs:
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           branch: main
+          dontautocreate: true  # 🔥 Prevents 'heroku create' from running
