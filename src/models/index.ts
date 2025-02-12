@@ -5,7 +5,7 @@ import Competence from './Competence';
 import CompetenceProfile from './CompetenceProfile';
 import Availability from './Availability';
 import Status from './Status';
-import Application from './Application';
+import Application from './Applications';
 
 
 

@@ -1,7 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/dbsetup';
 import Person from './Person';
-import Status from './Status';
+import Status from '../models/Status';
 
 class Application extends Model {
   declare application_id: number;

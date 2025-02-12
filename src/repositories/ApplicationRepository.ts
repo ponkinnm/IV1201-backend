@@ -1,6 +1,6 @@
 import { IApplicationRepository } from "./contracts/IApplicationRepository";
-import Application from "../model/Application";
-import { Person, Status } from "../model";
+import Application from "../models/Applications";
+import { Person, Status } from "../models";
 
 export class ApplicationRepository implements IApplicationRepository {
   async getAllApplications() {

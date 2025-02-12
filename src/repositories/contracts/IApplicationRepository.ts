@@ -1,4 +1,4 @@
-import  Application  from "../../model/Application";
+import  Application  from "../../models/Applications";
 
 export interface IApplicationRepository {
     getAllApplications(): Promise<Application[]>;
