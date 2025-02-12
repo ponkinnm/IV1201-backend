@@ -35,4 +35,4 @@ jobs:
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           branch: main
-          dontautocreate: true  # 🔥 Prevents 'heroku create' from running
+          dontautocreate: true  
