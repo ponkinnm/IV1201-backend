@@ -8,7 +8,10 @@ import cookieParser from 'cookie-parser';
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors()); 
+//Only allow requests coming from the frontend domain.
+const corsOptions = {origin : 'https://iv1201-frontend.vercel.app'};
+
+app.use(cors(corsOptions)); 
 app.use(express.json());
 app.use(cookieParser());
 app.use('/auth', authRouter);
