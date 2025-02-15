@@ -1,6 +1,9 @@
 import { ApplicationService } from "../services/ApplicationService";
 import { ApplicationRepository } from "../repositories/ApplicationRepository";
 import { RequestHandler } from "express";
+import  sequelize  from "../config/dbsetup";
+
+
 
 export class ApplicationController {
     private applicationService: ApplicationService;
@@ -12,10 +15,13 @@ export class ApplicationController {
 
     getAllApplications: RequestHandler = async (_req, res, next) => {
         try {
-            const applications = await this.applicationService.getAllApplications();
-            res.json(applications);
+          const applications = await sequelize.transaction(async () => {
+            return await this.applicationService.getAllApplications();
+          });
+    
+          res.json(applications);
         } catch (err) {
-            next(err);
+          next(err); 
         }
-    }
+      };
 }

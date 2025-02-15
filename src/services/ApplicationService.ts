@@ -1,4 +1,5 @@
 import { IApplicationRepository } from "../repositories/contracts/IApplicationRepository";
+import { Transaction } from "sequelize";
 
 export class ApplicationService {
     private applicationRepository: IApplicationRepository;

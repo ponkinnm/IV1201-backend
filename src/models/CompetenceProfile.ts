@@ -8,6 +8,9 @@ class CompetenceProfile extends Model {
   public person_id!: number;
   public competence_id!: number;
   public years_of_experience!: number;
+
+  declare Person?: Person;
+  declare Competence?: Competence;
 }
 
 CompetenceProfile.init(

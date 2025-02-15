@@ -1,6 +1,6 @@
 import { IPersonRepository } from "../repositories/contracts/IPersonRepository";
 import jwt from "jsonwebtoken";
-import { Person } from "../model";
+import { Person } from "../models";
 
 export class AuthService {
  private personRepository: IPersonRepository;
