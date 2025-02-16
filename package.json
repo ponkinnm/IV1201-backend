@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "tsc && node dist/index.js",
-    "dev": "nodemon src/index.ts",
+    "dev": "tsc --watch & node --watch dist/index.js",
     "build": "tsc",
     "lint": "eslint ."
   },
