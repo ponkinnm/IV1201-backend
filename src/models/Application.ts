@@ -28,8 +28,5 @@ Application.init(
   }
 );
 
-// Define associations
-//Application.belongsTo(Person, { foreignKey: 'person_id' });
-//Application.belongsTo(Status, { foreignKey: 'status_id' });
 
 export default Application;

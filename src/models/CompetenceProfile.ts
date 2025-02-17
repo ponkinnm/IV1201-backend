@@ -27,4 +27,5 @@ CompetenceProfile.init(
   }
 );
 
+
 export default CompetenceProfile;

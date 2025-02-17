@@ -5,7 +5,7 @@ import { PersonDTO } from "./PersonDTO";
 /**
  * This class is an object contain application details for an sepecific applicant 
  */
-export class ApplicationDetailDTO{
+export class ApplicationDetailsDTO{
     application_id : number;
     person : PersonDTO;
     competence : CompetenceProfileDTO[];

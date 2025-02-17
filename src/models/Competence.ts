@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/dbsetup';
+import CompetenceProfile from './CompetenceProfile';
 
 class Competence extends Model {
     public competence_id!: number;
@@ -17,5 +18,6 @@ class Competence extends Model {
       timestamps: false,
     }
   );
+
   
   export default Competence;

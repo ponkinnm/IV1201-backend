@@ -10,6 +10,7 @@ export class CompetenceProfileRepository implements ICompetenceProfileRepository
             include: [
                 {
                     model: Competence,
+                    as: 'Competence',
                     attributes : ['name']
                 }
 

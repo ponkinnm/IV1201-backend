@@ -6,7 +6,7 @@ import { PersonRepository } from "./PersonRepository";
 import { AvailabilityRepository } from "./AvailabilityRepository";
 import { CompetenceProfileRepository } from "./CompetenceProfileRepository";
 import { CompetenceProfileDTO } from "../models/CompetenceProfileDTO";
-import { ApplicationDetailDTO } from "../models/ApplicationDetailsDTO";
+import { ApplicationDetailsDTO } from "../models/ApplicationDetailsDTO";
 
 /**
  * This class is responible for all call to database that is related to application
@@ -44,26 +44,30 @@ export class ApplicationRepository implements IApplicationRepository {
   * @param person_id the user id
   * @returns an object of applicationDetailDTO that contail all user info, competences, availablities and status of the application
   */
-  async getApplicationDetailsById(person_id : number){
+  async getApplicationDetailsById(application_id : number){
       try{
         const personRepo = new PersonRepository();
         const availabilityRepo = new AvailabilityRepository();
         const competenceRepo = new CompetenceProfileRepository();
 
-        const application = await Application.findOne({where: {person_id},
-          include :[
-            {model: Status, attributes:['status_name'] }
-          
+        const application = await Application.findByPk(application_id, {
+          include: [
+            { model: Status, attributes: ['status_name'] }
           ],
-            attributes: ['application_id']
-          });
-          
-          const person = await personRepo.getUserDetailById(person_id);
-          const competences = await competenceRepo.getCompetenceProfileById(person_id); 
-          const availabilities = await availabilityRepo.getAllAvailabilyById(person_id);
+          attributes: ['application_id', 'person_id', 'status_id']
+        });
 
-          const applicationDetail : ApplicationDetailDTO = new ApplicationDetailDTO(
-            application!.application_id,
+
+          if (!application) {
+            throw new Error(`Application details not found for application_id: ${application_id}`);
+        }
+          
+          const person = await personRepo.getUserDetailById(application.person_id);
+          const competences = await competenceRepo.getCompetenceProfileById(application.person_id); 
+          const availabilities = await availabilityRepo.getAllAvailabilyById(application.person_id);
+
+          const applicationDetail : ApplicationDetailsDTO = new ApplicationDetailsDTO(
+            application_id,
             person,
             competences,
             availabilities,
@@ -73,7 +77,28 @@ export class ApplicationRepository implements IApplicationRepository {
           return applicationDetail;
       }catch(error){
 
-        throw error;
+       console.log(" error fetching",error);
       }
   };
+
+
+  async updateApplicationStatus(application_id : number, new_status_id : number){
+
+    try{
+      const [updatedCount, updatedRows] = await Application.update(
+        { status_id: new_status_id }, 
+        { where: { application_id }, returning : true }
+    );
+
+    if (updatedCount === 0) {
+        console.log('No record updated. Application not found.');
+        return null;
+    }
+    console.log('Application updated successfully:', updatedRows[0]);
+    return updatedRows[0]; 
+    }catch(err){
+      console.error('Error updating application:', err);
+    }
+
+  }
 }
