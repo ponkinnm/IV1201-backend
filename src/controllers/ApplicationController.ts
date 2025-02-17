@@ -1,6 +1,9 @@
 import { ApplicationService } from "../services/ApplicationService";
 import { ApplicationRepository } from "../repositories/ApplicationRepository";
 import { RequestHandler } from "express";
+import  sequelize  from "../config/dbsetup";
+
+
 
 export class ApplicationController {
     private applicationService: ApplicationService;
@@ -12,10 +15,54 @@ export class ApplicationController {
 
     getAllApplications: RequestHandler = async (_req, res, next) => {
         try {
-            const applications = await this.applicationService.getAllApplications();
-            res.json(applications);
+          const applications = await sequelize.transaction(async () => {
+            return await this.applicationService.getAllApplications();
+          });
+    
+          res.json(applications);
         } catch (err) {
-            next(err);
+          next(err); // Automatically rolls back on error
         }
-    }
+      };
+
+
+      getApplicationDetailsById : RequestHandler = async (_req, res , next) => {
+        try{
+          const application_id = parseInt(_req.params.application_id, 10);
+          const applicationDetail = await sequelize.transaction(async () =>{
+              return await this.applicationService.getApplicationDetailsById(application_id);
+          });
+
+          if (!applicationDetail) {
+            res.status(404).json({ error: 'Application not found' });
+          }else
+              res.json(applicationDetail);
+        } catch(err){
+          next(err); // Automatically rolls back on error
+        }
+      };
+      /**
+       * 
+       * @param _req request from user, contain the application_id and the new status id
+       * @param res  response with the updated row
+       * @param next 
+       */
+      updateApplicationStatus: RequestHandler = async (_req, res, next) => {
+        try{
+          const application_id = parseInt(_req.params.application_id, 10);
+
+          // Get new_status_id from the request body
+          const { new_status_id } = _req.body;
+
+          const updatedRow = await sequelize.transaction( async () => {
+            return await this.applicationService.updateApplicationStatus(application_id, new_status_id);
+          });
+          if(!updatedRow){
+            res.status(404).json({error: ' filed to update status '});
+          }
+            res.json(updatedRow);
+        }catch(err){
+          next(err);
+        }
+      }
 }

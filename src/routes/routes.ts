@@ -1,20 +1,14 @@
 import { Router } from 'express';
 import { ApplicationController } from "../controllers/ApplicationController";
-import { getStatus } from '../db';
+
 
 const router = Router();
 const applicationController = new ApplicationController();
 
-router.get('/getApplications', applicationController.getAllApplications);
+router.get('/applications', applicationController.getAllApplications);
 
-router.get('/getStatus', async (req, res) => {
-  try {
-    const status = await getStatus();
-    res.json(status);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Server error');
-  }
-});
+router.get('/applications/:application_id', applicationController.getApplicationDetailsById);
+
+router.put('/applications/:application_id/status', applicationController.updateApplicationStatus);
 
 export default router;
