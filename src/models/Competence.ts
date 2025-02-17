@@ -17,5 +17,6 @@ class Competence extends Model {
       timestamps: false,
     }
   );
+
   
   export default Competence;
