@@ -13,8 +13,12 @@ export class ApplicationController {
         this.applicationService = new ApplicationService(this.applicationRepository);
     }
 
-    getAllApplications: RequestHandler = async (_req, res, next) => {
+    getAllApplications: RequestHandler = async (req, res, next) => {
         try {
+          console.log('token:', req.cookies.accessToken);
+        console.log('decoded user:', req.user);
+        // we should be able to check things with eg req.user.role_id); 
+        //however we need to add this to the jwt token
           const applications = await sequelize.transaction(async () => {
             return await this.applicationService.getAllApplications();
           });
