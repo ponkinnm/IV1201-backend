@@ -5,7 +5,6 @@ import { Person, Status, } from "../models";
 import { PersonRepository } from "./PersonRepository";
 import { AvailabilityRepository } from "./AvailabilityRepository";
 import { CompetenceProfileRepository } from "./CompetenceProfileRepository";
-import { CompetenceProfileDTO } from "../models/CompetenceProfileDTO";
 import { ApplicationDetailsDTO } from "../models/ApplicationDetailsDTO";
 
 /**

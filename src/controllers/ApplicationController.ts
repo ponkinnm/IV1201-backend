@@ -29,7 +29,7 @@ export class ApplicationController {
       getApplicationDetailsById : RequestHandler = async (_req, res , next) => {
         try{
           const application_id = parseInt(_req.params.application_id, 10);
-          const applicationDetail = await sequelize.transaction(async (t1) =>{
+          const applicationDetail = await sequelize.transaction(async () =>{
               return await this.applicationService.getApplicationDetailsById(application_id);
           });
 
@@ -54,7 +54,7 @@ export class ApplicationController {
           // Get new_status_id from the request body
           const { new_status_id } = _req.body;
 
-          const updatedRow = await sequelize.transaction( async (t1) => {
+          const updatedRow = await sequelize.transaction( async () => {
             return await this.applicationService.updateApplicationStatus(application_id, new_status_id);
           });
           if(!updatedRow){

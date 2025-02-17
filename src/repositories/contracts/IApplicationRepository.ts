@@ -1,7 +1,7 @@
 import { Application } from "../../models";
 import { ApplicationDetailsDTO } from "../../models/ApplicationDetailsDTO";
 import { ApplicationDTO } from "../../models/ApplicationDTO";
-import { Transaction } from "sequelize";
+
 
 export interface IApplicationRepository {
     getAllApplications(): Promise<ApplicationDTO[]>;
