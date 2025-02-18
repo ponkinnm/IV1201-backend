@@ -23,8 +23,8 @@ export class AuthService {
   }
 
   generateJwtToken = (user: Person) => {
-    const { username, name, surname, email } = user;
-    const payload = { username, name, surname, email };
+    const { username, name, surname, email,role_id } = user;
+    const payload = { username, name, surname, email,role_id };
     return jwt.sign(payload, this.JWT_SECRET, { expiresIn: this.JWT_EXPIRATION });
   }
 }
