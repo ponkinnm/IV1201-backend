@@ -5,7 +5,7 @@ import { PersonDTO } from '../models/PersonDTO';
 
 
 /* eslint-disable @typescript-eslint/no-namespace */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 declare global {
   namespace Express {
     interface Request {
@@ -14,7 +14,7 @@ declare global {
   }
 }
 /* eslint-enable @typescript-eslint/no-namespace */
-/* eslint-enable @typescript-eslint/no-explicit-any */
+
 // an alternative is to move this into its own file and export it as a module eg. express.d.ts
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
