@@ -22,7 +22,7 @@ export class PersonRepository implements IPersonRepository {
             person!.surname,
             person!.pnr,
             person!.email,
-            person!.Role!.name
+            person!.role_id
         );
 
         return personDTO;
