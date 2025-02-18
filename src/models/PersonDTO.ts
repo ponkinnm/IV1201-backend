@@ -13,6 +13,6 @@ export class PersonDTO{
         this.surname = surname;
         this.pnr = pnr;
         this.email = email;
-        this.role_id= this.role_id
+        this.role_id= role_id
     }
 }
