@@ -16,7 +16,8 @@ export class PersonRepository implements IPersonRepository {
             person!.name,
             person!.surname,
             person!.pnr,
-            person!.email
+            person!.email,
+            person!.role_id
         );
 
         return personDTO;
