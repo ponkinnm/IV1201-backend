@@ -1,8 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { PersonDTO } from '../models/PersonDTO'; // Adjust path as needed
+import { PersonDTO } from '../models/PersonDTO'; 
 
-// use personDTO instead of any
+
+
+/* eslint-disable @typescript-eslint/no-namespace */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 declare global {
   namespace Express {
     interface Request {
@@ -10,6 +13,9 @@ declare global {
     }
   }
 }
+/* eslint-enable @typescript-eslint/no-namespace */
+/* eslint-enable @typescript-eslint/no-explicit-any */
+// an alternative is to move this into its own file and export it as a module eg. express.d.ts
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
   const token = req.cookies.accessToken;
