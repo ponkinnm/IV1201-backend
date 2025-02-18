@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/dbsetup';
+import Role from './Role';
 
 class Person extends Model {
   public person_id!: number;
@@ -10,6 +11,8 @@ class Person extends Model {
   public password!: string;
   public role_id!: number;
   public username!: string;
+
+  declare Role?: Role;
 }
 
 Person.init(

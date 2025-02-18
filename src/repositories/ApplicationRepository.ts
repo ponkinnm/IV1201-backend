@@ -40,7 +40,7 @@ export class ApplicationRepository implements IApplicationRepository {
 
  /**
   * 
-  * @param person_id the user id
+  * @param application_id the user id
   * @returns an object of applicationDetailDTO that contail all user info, competences, availablities and status of the application
   */
   async getApplicationDetailsById(application_id : number){
@@ -99,5 +99,7 @@ export class ApplicationRepository implements IApplicationRepository {
       console.error('Error updating application:', err);
     }
 
-  }
+  };
+
+    
 }

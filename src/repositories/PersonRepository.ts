@@ -1,6 +1,7 @@
 import { IPersonRepository } from "./contracts/IPersonRepository";
-import { Person } from "../models";
+import { Person, Role } from "../models";
 import {PersonDTO} from '../models/PersonDTO';
+
 
 export class PersonRepository implements IPersonRepository {
     async findUserByUsername(username: string) {
@@ -9,14 +10,19 @@ export class PersonRepository implements IPersonRepository {
 
     async getUserDetailById(person_id : number){
 
-        const person = await Person.findByPk(person_id);
+        const person = await Person.findByPk(person_id,
+            {
+                include: [ {model : Role, attributes: ['name']}]
+            }
+        );
 
         const personDTO = new PersonDTO(
             person!.person_id,
             person!.name,
             person!.surname,
             person!.pnr,
-            person!.email
+            person!.email,
+            person!.Role!.name
         );
 
         return personDTO;
