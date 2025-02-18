@@ -19,10 +19,11 @@ const corsOptions: CorsOptions = {
 app.use(cors(corsOptions)); 
 app.use(express.json());
 app.use(cookieParser());
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/auth', authRouter);
 app.use('/', router);
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 app.listen(port, async () => {
   try {
