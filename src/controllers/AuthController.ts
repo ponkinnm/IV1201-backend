@@ -23,7 +23,11 @@ export class AuthController {
     console.log('token:', accessToken);
     
 
-    res.cookie(this.authService.JWT_COOKIE_NAME, accessToken, { httpOnly: true, secure: true });
+    res.cookie(this.authService.JWT_COOKIE_NAME, accessToken, { 
+      httpOnly: true, 
+      secure: true,
+      sameSite: 'none' 
+    });
     res.json({ username: user.username, name: user.name, id: user.person_id })
   }
 }
