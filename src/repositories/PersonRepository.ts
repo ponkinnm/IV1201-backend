@@ -7,6 +7,10 @@ export class PersonRepository implements IPersonRepository {
         return Person.findOne({ where: { username } });
     }
 
+    async findUserByEmail(email: string) {
+        return Person.findOne({ where: { email } });
+    }
+
     async getUserDetailById(person_id : number){
 
         const person = await Person.findByPk(person_id);
