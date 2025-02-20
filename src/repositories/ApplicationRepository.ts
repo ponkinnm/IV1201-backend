@@ -65,6 +65,17 @@ export class ApplicationRepository implements IApplicationRepository {
           const competences = await competenceRepo.getCompetenceProfileById(application.person_id); 
           const availabilities = await availabilityRepo.getAllAvailabilyById(application.person_id);
 
+          if (!person) {
+            throw new Error(`Person not found for person_id: ${application.person_id}`);
+          }
+
+          if (!competences) {
+            throw new Error(`Competence profiles not found for person_id: ${application.person_id}`);
+          }
+          
+          if (!availabilities) {
+            throw new Error(`Availabilities not found for person_id: ${application.person_id}`);
+          }
           const applicationDetail : ApplicationDetailsDTO = new ApplicationDetailsDTO(
             application_id,
             person,
