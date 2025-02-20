@@ -13,8 +13,11 @@ export class AuthService {
     this.JWT_SECRET = process.env.JWT_SECRET as string;
   }
 
-  findUserAndVerifyPassword = async (username: string, password: string) => {
-    const person = await this.personRepository.findUserByUsername(username);
+  findUserAndVerifyPassword = async (usernameOrEmail: string, password: string) => {
+    let person = await this.personRepository.findUserByUsername(usernameOrEmail);
+    if(!person){
+      person = await this.personRepository.findUserByEmail(usernameOrEmail);
+    }
     if (!person) {
       return null;
     }
