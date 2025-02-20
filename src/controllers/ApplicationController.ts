@@ -1,7 +1,7 @@
 import { ApplicationService } from "../services/ApplicationService";
 import { ApplicationRepository } from "../repositories/ApplicationRepository";
 import { RequestHandler } from "express";
-import  sequelize  from "../config/dbsetup";
+import sequelize from "../config/dbsetup";
 
 
 
