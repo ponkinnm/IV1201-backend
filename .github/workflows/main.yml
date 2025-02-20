@@ -18,3 +18,6 @@ jobs:
 
       - name: Run Typecheck
         run: npm run typecheck
+
+      - name: Run Tests
+        run: npm test
