@@ -2,9 +2,9 @@ import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/dbsetup';
 
 class Competence extends Model {
-    public competence_id!: number;
-    public name!: string;
-  }
+  declare competence_id: number;
+  declare name: string;
+}
   
   Competence.init(
     {
