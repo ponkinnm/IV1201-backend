@@ -2,14 +2,14 @@ import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/dbsetup';
 
 class Person extends Model {
-  public person_id!: number;
-  public name!: string;
-  public surname!: string;
-  public pnr!: string;
-  public email!: string;
-  public password!: string;
-  public role_id!: number;
-  public username!: string;
+  declare person_id: number;
+  declare name: string;
+  declare surname: string;
+  declare pnr: string;
+  declare email: string;
+  declare password: string;
+  declare role_id: number;
+  declare username: string;
 }
 
 Person.init(

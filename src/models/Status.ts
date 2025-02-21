@@ -2,8 +2,8 @@ import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/dbsetup';
 
 class Status extends Model {
-  public status_id!: number;
-  public status_name!: string;
+  declare status_id: number;
+  declare status_name: string;
 }
 
 Status.init(
