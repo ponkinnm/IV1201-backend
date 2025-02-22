@@ -1,18 +1,26 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/dbsetup';
 import Role from './Role';
+import CompetenceProfile from './CompetenceProfile';
+import Availability from './Availability';
+import Application from './Application';
+
 
 class Person extends Model {
-  public person_id!: number;
-  public name!: string;
-  public surname!: string;
-  public pnr!: string;
-  public email!: string;
-  public password!: string;
-  public role_id!: number;
-  public username!: string;
+  declare person_id: number;
+  declare name: string;
+  declare surname: string;
+  declare pnr: string;
+  declare email: string;
+  declare password: string;
+  declare role_id: number;
+  declare username: string;
 
   declare Role?: Role;
+  declare CompetenceProfiles?: CompetenceProfile[];
+  declare Availabilities?: Availability[];
+  declare Application?: Application;
+
 }
 
 Person.init(
@@ -45,7 +53,14 @@ Person.init(
     },
     role_id: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
+      defaultValue: 2,
+      references: {
+        model: Role,
+        key: 'role_id'
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'CASCADE'
     },
     username: {
       type: DataTypes.STRING(255),
@@ -54,7 +69,8 @@ Person.init(
   },
   {
     sequelize,
-    tableName: 'person',
+    modelName: 'person',
+    tableName: 'person', 
     timestamps: false,
   }
 );

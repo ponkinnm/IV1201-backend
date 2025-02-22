@@ -70,7 +70,7 @@ export class ApplicationRepository implements IApplicationRepository {
             person,
             competences,
             availabilities,
-            application!.Status!.status_name
+            application.Status!.status_name
           );
 
           return applicationDetail;
@@ -100,6 +100,29 @@ export class ApplicationRepository implements IApplicationRepository {
     }
 
   };
+
+  async createApplication(person_id : number,
+    availabilities: Array<{from_date : Date, to_date: Date}>,
+  competences: Array<{ competence_id: number; years_of_experience: number }> ){
+
+    try{
+      const availabilityRepo = new AvailabilityRepository();
+      const competenceRepo = new CompetenceProfileRepository();
+
+      const application = await Application.create({
+        person_id : person_id,
+        status_id : 1
+      });
+
+      const competenceProfiles = await competenceRepo.addNewCompetenceProfile(person_id, competences);
+      const insertedAvailablility = await availabilityRepo.addAvailability(person_id, availabilities);
+
+      return this.getApplicationDetailsById(application.application_id)
+    }catch(err){
+      console.error('Error updating application:', err);
+      return null;
+    }
+  }
 
     
 }

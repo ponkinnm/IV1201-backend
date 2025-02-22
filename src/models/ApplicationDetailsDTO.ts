@@ -13,7 +13,7 @@ export class ApplicationDetailsDTO{
     status : string;
 
 
-    constructor(application_id : number, person: PersonDTO, competence: CompetenceProfileDTO [], availability: AvailabilityDTO[], status: string){
+    constructor(application_id : number, person: PersonDTO, competence: CompetenceProfileDTO [], availability: AvailabilityDTO[], status: string = 'unhandled'){
         this.application_id = application_id;
         this.person = person;
         this.competence = competence;

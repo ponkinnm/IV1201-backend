@@ -1,9 +1,12 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/dbsetup';
+import CompetenceProfile from './CompetenceProfile';
 
 class Competence extends Model {
-    public competence_id!: number;
-    public name!: string;
+    declare competence_id: number;
+    declare name: string;
+    
+    declare CompetenceProfiles?: CompetenceProfile[];
   }
   
   Competence.init(
@@ -11,11 +14,13 @@ class Competence extends Model {
       competence_id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
       name: { type: DataTypes.STRING, allowNull: false },
     },
-    {
-      sequelize,
-      tableName: 'competence',
-      timestamps: false,
-    }
+  {
+    sequelize,
+    modelName: 'competence',
+    tableName: 'competence',
+    timestamps: false,
+  }
+
   );
 
   

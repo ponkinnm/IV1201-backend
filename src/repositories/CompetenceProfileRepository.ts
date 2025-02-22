@@ -26,4 +26,25 @@ export class CompetenceProfileRepository implements ICompetenceProfileRepository
         return competenceProfileDTO;
 
     }
+
+    async addNewCompetenceProfile(
+        person_id: number,
+        competences: Array<{ competence_id: number; years_of_experience: number }>
+    ) {
+        try {
+            // Bulk insert competences for the given person_id
+            const insertedCompetences = await CompetenceProfile.bulkCreate(
+                competences.map((comp) => ({
+                    person_id,
+                    competence_id: comp.competence_id,
+                    years_of_experience: comp.years_of_experience,
+                }))
+            );
+
+            return insertedCompetences;
+        } catch (error) {
+            console.error('Error adding new competence profiles:', error);
+            throw new Error('Failed to add new competence profiles.');
+        }
+    }
 }

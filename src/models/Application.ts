@@ -17,12 +17,32 @@ class Application extends Model {
 Application.init(
   {
     application_id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-    person_id: { type: DataTypes.INTEGER, allowNull: false, references: { model: Person, key: 'person_id' } },
-    status_id: { type: DataTypes.INTEGER, allowNull: false, references: { model: Status, key: 'status_id' } },
+    person_id: { 
+      type: DataTypes.INTEGER, 
+      allowNull: false, 
+      references: { 
+        model: Person, 
+        key: 'person_id' 
+      },
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE'
+    },
+    status_id: { 
+      type: DataTypes.INTEGER, 
+      allowNull: false,
+      defaultValue : 1,
+      references: { 
+        model: Status, 
+        key: 'status_id' 
+      },
+      onDelete: 'RESTRICT',
+      onUpdate: 'CASCADE'
+    },
     submitted_date: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
   },
   {
     sequelize,
+    modelName : 'application',
     tableName: 'application',
     timestamps: false,
   }
