@@ -1,9 +1,12 @@
 import { RequestHandler } from "express";
 import { AuthService } from "../services/AuthService";
-import { PersonRepository } from "../repositories/PersonRepository";
 
 export class AuthController {
-  private authService = new AuthService(new PersonRepository());
+  private authService;
+
+  constructor(authService: AuthService) {
+    this.authService = authService;
+  }
 
   login: RequestHandler = async (req, res) => {
     const { username, password } = req.body;
