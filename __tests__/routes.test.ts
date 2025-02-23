@@ -1,15 +1,15 @@
 import server from "../src";
+import request from 'supertest'
 
+afterAll(async () => {
+  server.closeAllConnections()
+  server.close()
+})
 
 describe('GET /docs', () => {
 
-  afterAll(async () => {
-    server.closeAllConnections()
-    server.close()
-  })
-
   it('should return 200', async () => {
-    const res = await fetch('http://localhost:3000/docs')
-    expect(res.status).toBe(200);
+    const response = await request(server).get('/docs/')
+    expect(response.status).toBe(200);
   })
 });
