@@ -3,7 +3,7 @@ import { AuthService } from "../services/AuthService";
 import { PersonRepository } from "../repositories/PersonRepository";
 
 export class AuthController {
-  private authService = new AuthService(new PersonRepository());
+  private readonly authService = new AuthService(new PersonRepository());
 
   login: RequestHandler = async (req, res) => {
     const { username, password } = req.body;

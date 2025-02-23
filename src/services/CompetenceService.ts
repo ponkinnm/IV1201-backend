@@ -1,7 +1,10 @@
 import { CompetenceRepository } from "../repositories/ComptenceRepository";
 
+/**
+ * Service class for handling competence-related operations
+ */
 export class CompetenceService{
-    private CompetenceRepository : CompetenceRepository;
+    private readonly CompetenceRepository : CompetenceRepository;
 
 
 
@@ -10,6 +13,10 @@ export class CompetenceService{
     }
 
 
+    /**
+     * Retrieves all competences
+     * @returns {Promise} A promise that resolves with all competences
+     */
     async getAllCompetences(){
         try{
             return await this.CompetenceRepository.getAllCompetence();

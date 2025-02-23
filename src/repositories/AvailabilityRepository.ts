@@ -2,8 +2,16 @@ import { Availability } from "../models";
 import { AvailabilityDTO } from "../models/AvailabilityDTO";
 import { IAvailabilityRepository } from "./contracts/IAvailabilityRepository";
 
+/**
+ * Repository class for handling availability-related database operations
+ */
 export class AvailabilityRepository implements IAvailabilityRepository{
 
+    /**
+     * Retrieves all availabilities for a specific person
+     * @param {number} person_id - The ID of the person to retrieve availabilities for
+     * @returns {Promise<AvailabilityDTO[]>} A promise that resolves with an array of availability DTOs
+     */
     async getAllAvailabilyById(person_id :number){
 
         try {
@@ -23,7 +31,13 @@ export class AvailabilityRepository implements IAvailabilityRepository{
         }
 
 
-      async  addAvailability(person_id : number, availabilities: Array<{from_date : Date, to_date: Date}>){
+    /**
+     * Adds multiple availability records for a person
+     * @param {number} person_id - The ID of the person to add availabilities for
+     * @param {Array<{from_date: Date, to_date: Date}>} availabilities - Array of availability objects with from/to dates
+     * @returns {Promise} A promise that resolves when the availabilities are added
+     */
+    async addAvailability(person_id : number, availabilities: Array<{from_date : Date, to_date: Date}>){
         try {
           const insertedAvailablility = await Availability.bulkCreate(
             availabilities.map((avai) => ({
