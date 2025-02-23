@@ -1,8 +1,13 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/AuthController";
+import { AuthService } from "../services/AuthService";
+import { PersonRepository } from "../repositories/PersonRepository";
+import { MockPersonRepository } from "../repositories/MockPersonRepository";
 
 export const authRouter = Router();
-const authController = new AuthController();
+const personRepository = process.env.NODE_ENV === 'test' ? new MockPersonRepository() : new PersonRepository();
+const authService = new AuthService(personRepository);
+const authController = new AuthController(authService);
 
 /**
  *  @openapi

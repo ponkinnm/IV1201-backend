@@ -10,7 +10,7 @@ export class AuthService {
 
   constructor(personRepository: IPersonRepository) {
     this.personRepository = personRepository;
-    this.JWT_SECRET = process.env.JWT_SECRET as string;
+    this.JWT_SECRET = process.env.NODE_ENV === 'test' ? 'dummy' : process.env.JWT_SECRET as string;
   }
 
   findUserAndVerifyPassword = async (usernameOrEmail: string, password: string) => {
