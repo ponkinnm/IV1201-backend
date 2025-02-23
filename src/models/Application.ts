@@ -23,9 +23,7 @@ Application.init(
       references: { 
         model: Person, 
         key: 'person_id' 
-      },
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
+      }
     },
     status_id: { 
       type: DataTypes.INTEGER, 
@@ -34,9 +32,7 @@ Application.init(
       references: { 
         model: Status, 
         key: 'status_id' 
-      },
-      onDelete: 'RESTRICT',
-      onUpdate: 'CASCADE'
+      }
     },
     submitted_date: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
   },

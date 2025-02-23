@@ -4,6 +4,8 @@ import {PersonDTO} from '../models/PersonDTO';
 
 
 export class PersonRepository implements IPersonRepository {
+
+    
     async findUserByUsername(username: string) {
         return Person.findOne({ where: { username } });
     }

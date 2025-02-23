@@ -7,6 +7,8 @@ class Availability extends Model {
   declare person_id: number;
   declare from_date: Date;
   declare to_date: Date;
+
+  declare person : Person;
 }
 
 Availability.init(
@@ -18,9 +20,7 @@ Availability.init(
       references: { 
         model: Person, 
         key: 'person_id' 
-      },
-      onDelete: 'CASCADE',
-      onUpdate: 'CASCADE'
+      }
     },
     from_date: { type: DataTypes.DATEONLY, allowNull: false },
     to_date: { type: DataTypes.DATEONLY, allowNull: false },

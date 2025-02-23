@@ -1,6 +1,6 @@
 import { ApplicationService } from "../services/ApplicationService";
 import { ApplicationRepository } from "../repositories/ApplicationRepository";
-import { RequestHandler } from "express";
+import { Request, Response, NextFunction, RequestHandler } from "express";
 import  sequelize  from "../config/dbsetup";
 
 
@@ -13,7 +13,17 @@ export class ApplicationController {
         this.applicationService = new ApplicationService(this.applicationRepository);
     }
 
-    getAllApplications: RequestHandler = async (req, res, next) => {
+    /**
+     * Handles GET request to retrieve all applications
+     * @async
+     * @function getAllApplications
+     * @param {Request} req - Express request object
+     * @param {Response} res - Express response object
+     * @param {NextFunction} next - Express next function for error handling
+     * @returns {Promise<void>} - Sends JSON response with applications or error
+     * @throws {Error} - If there's an error retrieving applications
+     */
+    getAllApplications: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
           console.log('token:', req.cookies.accessToken);
         console.log('decoded user:', req.user);
@@ -23,16 +33,26 @@ export class ApplicationController {
             return await this.applicationService.getAllApplications();
           });
     
-          res.json(applications);
+          res.status(200).json(applications);
         } catch (err) {
           next(err); // Automatically rolls back on error
         }
       };
 
 
-      getApplicationDetailsById : RequestHandler = async (_req, res , next) => {
+      /**
+       * Handles GET request to retrieve details of a specific application
+       * @async
+       * @function getApplicationDetailsById
+       * @param {Request} req - Express request object containing application_id in params
+       * @param {Response} res - Express response object
+       * @param {NextFunction} next - Express next function for error handling
+       * @returns {Promise<void>} - Sends JSON response with application details or error
+       * @throws {Error} - If there's an error retrieving application details
+       */
+      getApplicationDetailsById : RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try{
-          const application_id = parseInt(_req.params.application_id, 10);
+          const application_id = parseInt(req.params.application_id, 10);
           const applicationDetail = await sequelize.transaction(async () =>{
               return await this.applicationService.getApplicationDetailsById(application_id);
           });
@@ -40,23 +60,27 @@ export class ApplicationController {
           if (!applicationDetail) {
             res.status(404).json({ error: 'Application not found' });
           }else
-              res.json(applicationDetail);
+              res.status(200).json(applicationDetail);
         } catch(err){
           next(err); // Automatically rolls back on error
         }
       };
       /**
-       * 
-       * @param _req request from user, contain the application_id and the new status id
-       * @param res  response with the updated row
-       * @param next 
+       * Handles PUT request to update application status
+       * @async
+       * @function updateApplicationStatus
+       * @param {Request} req - Express request object containing application_id in params and new_status_id in body
+       * @param {Response} res - Express response object
+       * @param {NextFunction} next - Express next function for error handling
+       * @returns {Promise<void>} - Sends JSON response with updated application or error
+       * @throws {Error} - If there's an error updating application status
        */
-      updateApplicationStatus: RequestHandler = async (_req, res, next) => {
+      updateApplicationStatus: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> =>{
         try{
-          const application_id = parseInt(_req.params.application_id, 10);
+          const application_id = parseInt(req.params.application_id, 10);
 
           // Get new_status_id from the request body
-          const { new_status_id } = _req.body;
+          const { new_status_id } = req.body;
 
           const updatedRow = await sequelize.transaction( async () => {
             return await this.applicationService.updateApplicationStatus(application_id, new_status_id);
@@ -64,7 +88,7 @@ export class ApplicationController {
           if(!updatedRow){
             res.status(404).json({error: ' filed to update status '});
           }
-            res.json(updatedRow);
+            res.status(200).json(updatedRow);
         }catch(err){
           next(err);
         }
