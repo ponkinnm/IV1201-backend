@@ -8,6 +8,7 @@ import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './docs'
 
 
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -28,6 +29,8 @@ app.listen(port, async () => {
   try {
     await sequelize.authenticate();
     console.log('Database connection established successfully.');
+    await sequelize.sync({ alter: true });
+    console.log('Database models synchronized successfully.');
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }

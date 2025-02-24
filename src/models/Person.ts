@@ -44,17 +44,14 @@ Person.init(
     },
     email: {
       type: DataTypes.STRING(255),
-      allowNull: false,
       unique: true,
     },
     password: {
       type: DataTypes.STRING(255),
-      allowNull: false,
     },
     role_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 2,
       references: {
         model: Role,
         key: 'role_id'

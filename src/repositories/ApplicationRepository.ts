@@ -1,7 +1,7 @@
-import { IApplicationRepository } from "./contracts/IApplicationRepository";
 import Application from "../models/Application";
+import { Person, Status } from "../models";
+import { IApplicationRepository } from "./contracts/IApplicationRepository";
 import { ApplicationDTO } from "../models/ApplicationDTO";
-import { Person, Status, } from "../models";
 import { PersonRepository } from "./PersonRepository";
 import { AvailabilityRepository } from "./AvailabilityRepository";
 import { CompetenceProfileRepository } from "./CompetenceProfileRepository";
@@ -29,16 +29,17 @@ export class ApplicationRepository implements IApplicationRepository {
       ],
     });
 
+    console.log('Raw applications data:', JSON.stringify(applications, null, 2)); 
+    
     const applicationsDTO: ApplicationDTO[] = applications.map((app) =>
       new ApplicationDTO(
         app.application_id,
-        app.Person!.name,
-        app.Person!.surname,
-        app.Person!.email,
-        app.Status!.status_name,
+        app.person!.name,
+        app.person!.surname,
+        app.person!.email,
+        app.status!.status_name,
       )
     );
-
     return applicationsDTO;
   };
 
@@ -74,7 +75,7 @@ export class ApplicationRepository implements IApplicationRepository {
             person,
             competences,
             availabilities,
-            application.Status!.status_name
+            application!.status?.status_name
           );
 
           return applicationDetail;
