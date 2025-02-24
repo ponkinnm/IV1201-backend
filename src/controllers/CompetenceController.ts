@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, RequestHandler } from "express";
 import { CompetenceRepository } from "../repositories/ComptenceRepository";
 import { CompetenceService } from "../services/CompetenceService";
-import { Competence, sequelize } from "../models";
+import { sequelize } from "../models";
 
 export class CompetenceController{
     private readonly competenceRepo = new CompetenceRepository();
