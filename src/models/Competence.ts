@@ -3,11 +3,13 @@ import sequelize from '../config/dbsetup';
 import CompetenceProfile from './CompetenceProfile';
 
 class Competence extends Model {
+
     declare competence_id: number;
     declare name: string;
     
     declare CompetenceProfiles?: CompetenceProfile[];
   }
+
   
   Competence.init(
     {

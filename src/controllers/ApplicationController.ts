@@ -1,7 +1,9 @@
 import { ApplicationService } from "../services/ApplicationService";
 import { ApplicationRepository } from "../repositories/ApplicationRepository";
 import { Request, Response, NextFunction, RequestHandler } from "express";
-import  sequelize  from "../config/dbsetup";
+import sequelize from "../config/dbsetup";
+import { AuthService } from "../services/AuthService";
+
 
 
 
@@ -25,13 +27,14 @@ export class ApplicationController {
      */
     getAllApplications: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
-          console.log('token:', req.cookies.accessToken);
-        console.log('decoded user:', req.user);
-        // we should be able to check things with eg req.user.role_id); 
-        //however we need to add this to the jwt token
+          if(!AuthService.isRecruiter(req.user)) {
+            res.status(401).json({ error: 'Unauthorized' });
+            return;
+          }
           const applications = await sequelize.transaction(async () => {
             return await this.applicationService.getAllApplications();
           });
+
     
           res.status(200).json(applications);
         } catch (err) {
@@ -59,8 +62,12 @@ export class ApplicationController {
 
           if (!applicationDetail) {
             res.status(404).json({ error: 'Application not found' });
-          }else
-              res.status(200).json(applicationDetail);
+          }else if(!(AuthService.isRecruiter(_req.user) || applicationDetail.person.person_id === _req.user!.person_id)){
+            res.status(401).json({ error: 'Unauthorized' });
+          } else {
+            res.json(applicationDetail);
+          }
+
         } catch(err){
           next(err); // Automatically rolls back on error
         }
@@ -77,7 +84,12 @@ export class ApplicationController {
        */
       updateApplicationStatus: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> =>{
         try{
-          const application_id = parseInt(req.params.application_id, 10);
+
+          if(!AuthService.isRecruiter(_req.user)){
+            res.status(401).json({error: 'Unauthorized'});
+            return;
+          }
+          const application_id = parseInt(_req.params.application_id, 10);
 
           // Get new_status_id from the request body
           const { new_status_id } = req.body;

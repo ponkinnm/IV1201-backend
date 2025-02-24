@@ -21,6 +21,7 @@ class Person extends Model {
   declare Availabilities?: Availability[];
   declare Application?: Application;
 
+
 }
 
 Person.init(

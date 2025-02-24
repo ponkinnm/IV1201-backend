@@ -3,17 +3,18 @@ import { Person, Role } from "../models";
 import {PersonDTO} from '../models/PersonDTO';
 
 
+
 /**
  * Repository class for handling person/user-related database operations
  */
 export class PersonRepository implements IPersonRepository {
 
-    
     /**
      * Finds a user by their username
      * @param {string} username - The username to search for
      * @returns {Promise<Person | null>} A promise that resolves with the user if found, null otherwise
      */
+/*
     async findUserByUsername(username: string) {
         return Person.findOne({ where: { username } });
     }
@@ -23,7 +24,7 @@ export class PersonRepository implements IPersonRepository {
      * @param {number} person_id - The ID of the person to retrieve details for
      * @returns {Promise<PersonDTO>} A promise that resolves with the user details
      */
-    async getUserDetailById(person_id : number){
+ /*   async getUserDetailById(person_id : number){
 
         const person = await Person.findByPk(person_id,
             {
@@ -46,7 +47,7 @@ export class PersonRepository implements IPersonRepository {
      * @param {string} email - The email address to search for
      * @returns {Promise<PersonDTO | null>} A promise that resolves with the user if found, null otherwise
      */
-    async findUserByEmail(email: string){
+  /*  async findUserByEmail(email: string){
         const person = await Person.findOne({where : {email}});
 
         if(!person)
@@ -169,4 +170,23 @@ export class PersonRepository implements IPersonRepository {
         return null;
       }
    }
+}
+
+  async findUserByUsername(username: string) {
+    return Person.findOne({ where: { username } });
+  }
+
+  async findUserByEmail(email: string) {
+    return Person.findOne({ where: { email } });
+  }
+
+  async getUserDetailById(person_id: number) {
+
+    const person = await Person.findByPk(person_id);
+    if (!person) {
+      return null;
+    }
+
+    return new PersonDTO(person);
+  }
 }

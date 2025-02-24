@@ -8,9 +8,10 @@ class Availability extends Model {
   declare from_date: Date;
   declare to_date: Date;
 
-  declare person : Person;
-}
 
+  declare person : Person;
+
+}
 Availability.init(
   {
     availability_id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },

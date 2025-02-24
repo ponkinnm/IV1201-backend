@@ -67,6 +67,9 @@ export class ApplicationRepository implements IApplicationRepository {
         }
           
           const person = await personRepo.getUserDetailById(application.person_id);
+          if(!person){
+            throw new Error(`Person not found for person_id: ${application.person_id} in application: ${application_id}`);
+          }
           const competences = await competenceRepo.getCompetenceProfileById(application.person_id); 
           const availabilities = await availabilityRepo.getAllAvailabilyById(application.person_id);
 
