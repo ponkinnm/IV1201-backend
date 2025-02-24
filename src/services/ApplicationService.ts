@@ -63,7 +63,7 @@ export class ApplicationService {
      */
     async submitApplication(person_id : number,
         availabilities: Array<{from_date : Date, to_date: Date}>,
-      competences: Array<{ competence_id: number; years_of_experience: number }> ): Promise<any>{
+      competences: Array<{ competence_id: number; years_of_experience: number }> ){
         try{
             return await this.applicationRepository.submitApplication(person_id, availabilities, competences);
         }catch(err){
