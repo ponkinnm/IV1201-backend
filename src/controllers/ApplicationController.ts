@@ -62,7 +62,7 @@ export class ApplicationController {
 
           if (!applicationDetail) {
             res.status(404).json({ error: 'Application not found' });
-          }else if(!(AuthService.isRecruiter(_req.user) || applicationDetail.person.person_id === _req.user!.person_id)){
+          }else if(!(AuthService.isRecruiter(req.user) || applicationDetail.person.person_id === req.user!.person_id)){
             res.status(401).json({ error: 'Unauthorized' });
           } else {
             res.json(applicationDetail);
@@ -85,11 +85,11 @@ export class ApplicationController {
       updateApplicationStatus: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> =>{
         try{
 
-          if(!AuthService.isRecruiter(_req.user)){
+          if(!AuthService.isRecruiter(req.user)){
             res.status(401).json({error: 'Unauthorized'});
             return;
           }
-          const application_id = parseInt(_req.params.application_id, 10);
+          const application_id = parseInt(req.params.application_id, 10);
 
           // Get new_status_id from the request body
           const { new_status_id } = req.body;
