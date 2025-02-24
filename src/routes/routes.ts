@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { ApplicationController } from "../controllers/ApplicationController";
 import { authMiddleware } from "../middleware/middleware_auth";
-import { StatusRepository } from '../repositories/StatusRepository';
+
 
 const router = Router();
 const applicationController = new ApplicationController();
-const statusRepo = new StatusRepository();
+
 router.use(authMiddleware);
 
 
