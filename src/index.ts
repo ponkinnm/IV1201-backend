@@ -5,6 +5,7 @@ import { authRouter } from "./routes/auth";
 import cookieParser from 'cookie-parser';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './docs'
+import sequelize from './config/dbsetup';
 
 
 const app = express();
