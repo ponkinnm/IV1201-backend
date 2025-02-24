@@ -1,12 +1,20 @@
 import { IPersonRepository } from "../repositories/contracts/IPersonRepository";
 import jwt from "jsonwebtoken";
 import { Person } from "../models";
+import { PersonDTO } from "../models/PersonDTO";
 
 export class AuthService {
  private personRepository: IPersonRepository;
  private readonly JWT_SECRET: string;
  public readonly JWT_EXPIRATION = '30m';
  public readonly JWT_COOKIE_NAME = 'accessToken';
+
+  /**
+   * Check if a person (user) is a recruiter
+   */
+ public static isRecruiter  = (personDTO?: PersonDTO) => {
+  return !!(personDTO && personDTO.role_id === 1);
+ }
 
   constructor(personRepository: IPersonRepository) {
     this.personRepository = personRepository;
