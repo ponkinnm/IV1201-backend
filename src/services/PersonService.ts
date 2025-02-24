@@ -22,6 +22,7 @@ export class PersonService{
         try{
             return await this.personRepository.getUserDetailById(person_id);
         }catch(err){
+            console.log(err)
             throw new Error("Field to get user detail with person_id ${person_id}");
         }
     }
@@ -46,6 +47,7 @@ export class PersonService{
            try{
             return await this.personRepository.addNewUser(name, surname,pnr, email, username,password, role_id);
            } catch(err){
+               console.log(err)
             throw new Error("Field to add a new user");
         }
     }
@@ -60,6 +62,7 @@ export class PersonService{
         try{
             return await this.personRepository.addNewPassword(person_id, new_password);
         }catch(err){
+            console.log(err)
             throw new Error("Field to update password");
         }
     }
@@ -74,6 +77,7 @@ export class PersonService{
         try{
             return await this.personRepository.addNewEmail(person_id, new_email);
         }catch(err){
+            console.log(err)
             throw new Error("Field to update email");
         }
     }
@@ -89,6 +93,7 @@ export class PersonService{
         try{
             return await this.personRepository.addUsernameAndPassword(person_id, new_username, new_password);
         }catch(err){
+            console.log(err)
             throw new Error("Filed to update username and password");
         }
     }
