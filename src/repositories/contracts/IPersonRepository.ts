@@ -4,7 +4,7 @@ import { PersonDTO } from "../../models/PersonDTO";
 
 export interface IPersonRepository {
   findUserByUsername(username: string): Promise<Person | null>;
-  getUserDetailById(person_id : number): Promise<PersonDTO>;
+  getUserDetailById(person_id : number): Promise<PersonDTO | null>;
 
   findUserByEmail(email: string): Promise<PersonDTO | null>;
   
