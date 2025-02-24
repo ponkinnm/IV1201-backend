@@ -3,8 +3,8 @@ import { PersonDTO } from "../../models/PersonDTO";
 
 
 export interface IPersonRepository {
-  findUserByUsername(username: string): Promise<PersonDTO | null>;
-  getUserDetailById(person_id : number): Promise<PersonDTO | null>;
+  findUserByUsername(username: string): Promise<Person | null>;
+  getUserDetailById(person_id : number): Promise<PersonDTO>;
 
   findUserByEmail(email: string): Promise<PersonDTO | null>;
   
