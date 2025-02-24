@@ -16,7 +16,11 @@ export class PersonRepository implements IPersonRepository {
      */
 
     async findUserByUsername(username: string) {
-        return await Person.findOne({ where: { username } });
+       const person = await Person.findOne({ where: { username } });
+        if(!person)
+            return null;
+        
+        return  person;
     }
 
     /**
