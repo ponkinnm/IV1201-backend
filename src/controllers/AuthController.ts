@@ -23,9 +23,6 @@ export class AuthController {
 
     const accessToken = this.authService.generateJwtToken(user);
 
-    console.log('token:', accessToken);
-    
-
     res.cookie(this.authService.JWT_COOKIE_NAME, accessToken, { 
       httpOnly: true, 
       secure: true,
