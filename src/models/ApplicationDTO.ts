@@ -3,7 +3,7 @@ export class ApplicationDTO {
     name: string;          // Applicant's first name
     surname: string;       // Applicant's last name
     email: string;         // Applicant's email
-    status_name: string;   // Current status of the application (e.g., "Pending")
+    status_name: string;   
    
 
 

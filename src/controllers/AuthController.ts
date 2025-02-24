@@ -2,11 +2,15 @@ import { RequestHandler } from "express";
 import { AuthService } from "../services/AuthService";
 
 export class AuthController {
+
+ // private readonly authService = new AuthService(new PersonRepository());
+
   private authService;
 
   constructor(authService: AuthService) {
     this.authService = authService;
   }
+
 
   login: RequestHandler = async (req, res) => {
     const { username, password } = req.body;
@@ -23,11 +27,18 @@ export class AuthController {
 
     const accessToken = this.authService.generateJwtToken(user);
 
+
+    console.log('token:', accessToken);
+    
+
+  
+
     res.cookie(this.authService.JWT_COOKIE_NAME, accessToken, { 
       httpOnly: true, 
       secure: true,
       sameSite: 'none' 
     });
+
     res.json({ username: user.username, name: user.name, id: user.person_id })
   }
 }

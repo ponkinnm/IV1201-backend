@@ -1,10 +1,13 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/dbsetup';
+import Person from './Person';
 
 
 class Role extends Model {
-  public role_id!: number;
-  public name!: string;
+  declare role_id: number;
+  declare name: string;
+  
+  declare Persons?: Person[];
 }
 
 Role.init(
@@ -21,6 +24,7 @@ Role.init(
   },
   {
     sequelize,
+    modelName: 'role',
     tableName: 'role',
     timestamps: false,
   }

@@ -1,6 +1,4 @@
 export class CompetenceProfileDTO{
-    //competence_profile_id: number;
-    //person_id: number;
     competence_name: string;
     years_of_experience: number;
 
