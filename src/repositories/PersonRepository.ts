@@ -35,6 +35,10 @@ export class PersonRepository implements IPersonRepository {
                 include: [ {model : Role, attributes: ['name']}]
             }
         );
+        if(!person){
+            console.log('could not find user');
+            return null;
+        }
         const personDTO = new PersonDTO(
             person
         );
@@ -66,7 +70,7 @@ export class PersonRepository implements IPersonRepository {
      * @param {number} role_id - The user's role ID
      * @returns {Promise<PersonDTO>} A promise that resolves with the created user's details
      */
-    async addNewUser(name: string, surname:string, pnr: number, email: string, username:string, password: string, role_id: number ) : Promise<PersonDTO>{
+    async addNewUser(name: string, surname:string, pnr: number, email: string, username:string, password: string, role_id :number){
         const person = await Person.create(
             {
                 name : name,
@@ -111,7 +115,7 @@ export class PersonRepository implements IPersonRepository {
      * @param {string} new_email - The new email address to set
      * @returns {Promise} A promise that resolves when the email is updated
      */
-    async addNewEmail(person_id :number, new_email: string) {
+    async addNewEmail(person_id :number, new_email: string){
         try{
             const [updatedCount, updatedRows] = await Person.update(
               { email: new_email }, 
@@ -137,7 +141,7 @@ export class PersonRepository implements IPersonRepository {
      * @param {string} new_password - The new password to set
      * @returns {Promise} A promise that resolves when both username and password are updated
      */
-    async addUsernameAndPassword(person_id : number, new_username: string, new_password: string){
+    async addUsernameAndPassword(person_id : number, username: string, password: string){
     try{
         const [updatedCount, updatedRows] = await Person.update(
           { username: new_username, password : new_password }, 
