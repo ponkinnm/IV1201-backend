@@ -14,9 +14,9 @@ export class PersonRepository implements IPersonRepository {
      * @param {string} username - The username to search for
      * @returns {Promise<Person | null>} A promise that resolves with the user if found, null otherwise
      */
-/*
+
     async findUserByUsername(username: string) {
-        return Person.findOne({ where: { username } });
+        return await Person.findOne({ where: { username } });
     }
 
     /**
@@ -24,7 +24,7 @@ export class PersonRepository implements IPersonRepository {
      * @param {number} person_id - The ID of the person to retrieve details for
      * @returns {Promise<PersonDTO>} A promise that resolves with the user details
      */
- /*   async getUserDetailById(person_id : number){
+    async getUserDetailById(person_id : number){
 
         const person = await Person.findByPk(person_id,
             {
@@ -32,12 +32,7 @@ export class PersonRepository implements IPersonRepository {
             }
         );
         const personDTO = new PersonDTO(
-            person!.person_id,
-            person!.name,
-            person!.surname,
-            person!.pnr,
-            person!.email,
-            person!.role_id
+            person
         );
         return personDTO;
     };
@@ -47,20 +42,13 @@ export class PersonRepository implements IPersonRepository {
      * @param {string} email - The email address to search for
      * @returns {Promise<PersonDTO | null>} A promise that resolves with the user if found, null otherwise
      */
-  /*  async findUserByEmail(email: string){
+    async findUserByEmail(email: string){
         const person = await Person.findOne({where : {email}});
 
         if(!person)
             return null;
 
-        return new PersonDTO(            
-            person.person_id,
-            person.name,
-            person.surname,
-            person.pnr,
-            person.email,
-            person.role_id
-        );
+        return new PersonDTO(person);
     }
 
     /**
@@ -85,14 +73,7 @@ export class PersonRepository implements IPersonRepository {
                 role_id : role_id
             }
         );
-        return new PersonDTO(
-            person.person_id,
-            person.name,
-            person.surname,
-            person.pnr,
-            person.email,
-            person.role_id
-        );
+        return new PersonDTO(person);
     }
 
     /**
@@ -172,21 +153,4 @@ export class PersonRepository implements IPersonRepository {
    }
 }
 
-  async findUserByUsername(username: string) {
-    return Person.findOne({ where: { username } });
-  }
-
-  async findUserByEmail(email: string) {
-    return Person.findOne({ where: { email } });
-  }
-
-  async getUserDetailById(person_id: number) {
-
-    const person = await Person.findByPk(person_id);
-    if (!person) {
-      return null;
-    }
-
-    return new PersonDTO(person);
-  }
 }
