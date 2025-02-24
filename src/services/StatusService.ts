@@ -19,6 +19,7 @@ export class StatusService{
         try{
             return await this.statusRepo.getAllStatus();
         }catch(err){
+            console.log(err);
             throw new Error("Field to fetch status from Database")
         }
     }
