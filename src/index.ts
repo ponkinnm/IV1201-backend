@@ -26,6 +26,7 @@ app.use('/', router);
 
 const server = app.listen(port, async () => {
   try {
+    await sequelize.authenticate();
     console.log('Database connection established successfully.');
     await sequelize.sync({ alter: true });
     console.log('Database models synchronized successfully.');
