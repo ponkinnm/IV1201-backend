@@ -32,4 +32,9 @@ export class MockPersonRepository implements IPersonRepository {
 
     return new PersonDTO(person);
   }
+
+  async addNewUser() { /* Mock implementation */ }
+  async addNewPassword() { /* Mock implementation */ }
+  async addNewEmail() { /* Mock implementation */ }
+  async addUsernameAndPassword() { /* Mock implementation */ }
 }
