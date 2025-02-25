@@ -56,7 +56,7 @@ export class PersonRepository implements IPersonRepository {
         if(!person)
             return null;
 
-        return new PersonDTO(person);
+        return person;
     }
 
     /**
