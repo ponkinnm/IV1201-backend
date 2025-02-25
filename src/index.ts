@@ -33,7 +33,7 @@ const server = app.listen(port, async () => {
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   }
-  console.log(`Server running on port ${port}`);
+ // console.log(`Server running on port ${port}`);
 });
 
 export default server;
