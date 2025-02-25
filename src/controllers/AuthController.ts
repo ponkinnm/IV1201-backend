@@ -3,8 +3,6 @@ import { AuthService } from "../services/AuthService";
 
 export class AuthController {
 
- // private readonly authService = new AuthService(new PersonRepository());
-
   private authService;
 
   constructor(authService: AuthService) {
@@ -26,11 +24,7 @@ export class AuthController {
     }
 
     const accessToken = this.authService.generateJwtToken(user);
-
-
-    console.log('token:', accessToken);
     
-
   
 
     res.cookie(this.authService.JWT_COOKIE_NAME, accessToken, { 
