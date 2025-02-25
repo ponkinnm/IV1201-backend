@@ -5,10 +5,10 @@ import { sequelize } from "../models";
 
 export class CompetenceController{
     private readonly competenceRepo = new CompetenceRepository();
-    private readonly comptenceService;
+    private readonly competenceService;
 
     constructor(){
-        this.comptenceService = new CompetenceService(this.competenceRepo);
+        this.competenceService = new CompetenceService(this.competenceRepo);
     }
 
 
@@ -25,7 +25,7 @@ export class CompetenceController{
     getAllCompetence : RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> =>{
         try{
             const competences = sequelize.transaction(async ()=> {
-                return await this.comptenceService.getAllCompetences();
+                return await this.competenceService.getAllCompetences();
             });
             res.status(200).json({ competences });
         }catch(err){
