@@ -2,9 +2,7 @@ import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 import { createNamespace } from 'cls-hooked';
 
-dotenv.config({
-  path: '.env.development.local'
-});
+dotenv.config();
 
 // Create CLS namespace
 const namespace = createNamespace('transaction-manager');
