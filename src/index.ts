@@ -5,6 +5,7 @@ import { authRouter } from "./routes/auth";
 import cookieParser from 'cookie-parser';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './docs'
+import errorHandler from "./routes/ErrorHandler";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -20,7 +21,7 @@ app.use(cookieParser());
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/auth', authRouter);
 app.use('/', router);
-
+errorHandler.registerErrorHandlers(app);
 
 const server = app.listen(port, async () => {
   try {
