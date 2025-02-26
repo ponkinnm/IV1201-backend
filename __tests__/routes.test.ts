@@ -1,15 +1,10 @@
-import server from "../src";
+import app from "../src";
 import request from 'supertest'
-
-afterAll(async () => {
-  server.closeAllConnections()
-  server.close()
-})
 
 describe('GET /docs', () => {
 
   it('should return 200', async () => {
-    const response = await request(server).get('/docs/')
+    const response = await request(app).get('/docs/')
     expect(response.status).toBe(200);
   })
 });
@@ -21,7 +16,7 @@ describe('POST /auth/login', () => {
       username: '',
       password: ''
     }
-    const response = await request(server)
+    const response = await request(app)
       .post('/auth/login')
       .send(missingCredentials)
     expect(response.status).toBe(400);
@@ -32,7 +27,7 @@ describe('POST /auth/login', () => {
       username: 'invalid',
       password: 'invalid'
     }
-    const response = await request(server)
+    const response = await request(app)
       .post('/auth/login')
       .send(invalidCredentials)
     expect(response.status).toBe(401);
@@ -43,7 +38,7 @@ describe('POST /auth/login', () => {
       username: 'johndoe',
       password: 'password'
     }
-    const response = await request(server)
+    const response = await request(app)
       .post('/auth/login')
       .send(validCredentials)
     expect(response.status).toBe(200);
