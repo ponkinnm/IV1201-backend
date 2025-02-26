@@ -4,9 +4,6 @@ import { Request, Response, NextFunction, RequestHandler } from "express";
 import sequelize from "../config/dbsetup";
 import { AuthService } from "../services/AuthService";
 
-
-
-
 export class ApplicationController {
     private readonly applicationService: ApplicationService;
     private readonly applicationRepository = new ApplicationRepository();

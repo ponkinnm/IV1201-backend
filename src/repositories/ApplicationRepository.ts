@@ -29,8 +29,6 @@ export class ApplicationRepository implements IApplicationRepository {
       ],
     });
 
-    console.log('Raw applications data:', JSON.stringify(applications, null, 2)); 
-    
     const applicationsDTO: ApplicationDTO[] = applications.map((app) =>
       new ApplicationDTO(
         app.application_id,
