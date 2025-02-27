@@ -111,19 +111,22 @@ export class ApplicationController {
        * @param {NextFunction} next - Express next function for error handling
        * @returns {Promise<void>} - Sends JSON response with submitted application or error
        * @throws {Error} - If there's an error submitting the application
-       * @property {number} req.body.person_id - ID of the applicant
        * @property {Array<{competence_id: number, years_of_experience: number}>} req.body.competenceProfile - Array of competence profiles
        * @property {Array<{from_date: Date, to_date: Date}>} req.body.availabilities - Array of availability periods
        */
       submitApplication :  RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> =>{
         try{
-          const {person_id, competenceProfile, availabilities} = req.body;
+          // Get person_id from the authenticated user instead of request body
+          const person_id = req.user!.person_id;
 
-          const submitedApplication  = await sequelize.transaction(async () =>{
+  
+          const { competenceProfile, availabilities } = req.body;
+      
+          const submittedApplication = await sequelize.transaction(async () => {
             return await this.applicationService.submitApplication(person_id, availabilities, competenceProfile);
           });
-
-          res.status(200).json(submitedApplication);
+      
+          res.status(200).json(submittedApplication);
         }catch(err){
           next(err);
         }
