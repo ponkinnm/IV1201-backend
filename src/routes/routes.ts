@@ -6,7 +6,7 @@ import { authMiddleware } from "../middleware/middleware_auth";
 const router = Router();
 const applicationController = new ApplicationController();
 
-router.use(authMiddleware);
+//router.use(authMiddleware);
 
 
 /**
@@ -75,6 +75,7 @@ router.get('/applications/:application_id', applicationController.getApplication
  *          description: Application not found
  */
 router.put('/applications/:application_id/status', applicationController.updateApplicationStatus);
+
 
 
 export default router; 
