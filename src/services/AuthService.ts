@@ -53,8 +53,9 @@ export class AuthService {
    * @returns {string} The generated JWT token
    */
   generateJwtToken = (user: Person) => {
-    const { username, name, surname, email,role_id } = user;
-    const payload = { username, name, surname, email,role_id };
+    const { username, name, surname, email, role_id, person_id } = user;
+    
+    const payload = { username, name, surname, email,role_id, person_id };
     return jwt.sign(payload, this.JWT_SECRET, { expiresIn: this.JWT_EXPIRATION });
   }
 }
