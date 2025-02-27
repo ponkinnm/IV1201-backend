@@ -19,5 +19,12 @@ const sequelize = new Sequelize(process.env.DATABASE_URL as string, {
   logging: false, // Disable logging for cleaner output
 });
 
+export async function initDb() {
+  await sequelize.authenticate();
+  console.log('Database connection established successfully.');
+  await sequelize.sync({ alter: true });
+  console.log('Database models synchronized successfully.');
+}
+
 
 export default sequelize;

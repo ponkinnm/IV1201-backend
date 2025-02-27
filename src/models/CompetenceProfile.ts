@@ -22,6 +22,7 @@ CompetenceProfile.init(
   },
   {
     sequelize,
+    modelName: 'competence_profile',
     tableName: 'competence_profile',
     timestamps: false,
   }

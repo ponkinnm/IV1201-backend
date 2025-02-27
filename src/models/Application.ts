@@ -10,9 +10,10 @@ class Application extends Model {
   declare submitted_date: Date;
   
   // Associations
-  declare Person?: Person;
-  declare Status?: Status;
+  declare person?: Person;
+  declare status?: Status;
 }
+
 
 Application.init(
   {
@@ -24,9 +25,9 @@ Application.init(
   {
     sequelize,
     tableName: 'application',
+    modelName: 'application',
     timestamps: false,
   }
 );
-
 
 export default Application;
