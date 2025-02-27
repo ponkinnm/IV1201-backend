@@ -6,7 +6,7 @@ import { authMiddleware } from "../middleware/middleware_auth";
 const router = Router();
 const applicationController = new ApplicationController();
 
-//router.use(authMiddleware);
+router.use(authMiddleware);
 
 
 /**
