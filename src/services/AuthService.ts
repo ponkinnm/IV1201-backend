@@ -77,7 +77,7 @@ export class AuthService {
              try{
               return await this.personRepository.addNewUser(name, surname,pnr, email, username,password, role_id);
              } catch(err){
-                console.error("An error occurred:", error);
+                console.error("An error occurred:", err);
                 throw err;
           }
       }
