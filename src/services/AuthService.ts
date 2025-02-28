@@ -82,4 +82,39 @@ export class AuthService {
                 throw err;
           }
       }
+
+    /**
+     * Updates a user's password
+     * @param {number} person_id - The ID of the person to update
+     * @param {string} new_password - The new password to set
+     * @returns {Promise} A promise that resolves when the password is updated
+     */
+    async addNewPassword(person_id: number, new_password: string){
+      try{
+          return await this.personRepository.addNewPassword(person_id, new_password);
+      }catch(err){
+          console.log(err)
+          throw new Error("Field to update password");
+      }
+  }
+
+  
+    /**
+   * Verifies if a user exists and if the provided password matches
+   * @param {string} emailOrUsername - The username to verify
+   * @returns {Promise<Person | null>} The user if credentials are valid, null otherwise
+   */
+
+    findUser = async (emailOrUsername: string) => {
+      let person = await this.personRepository.findUserByUsername(emailOrUsername);
+      if(!person){
+        person = await this.personRepository.findUserByEmail(emailOrUsername);
+      }
+  
+      if (!person) {
+        return null;
+      }
+      return  person;
+    }
+
 }

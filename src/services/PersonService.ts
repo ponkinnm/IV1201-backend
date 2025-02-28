@@ -52,20 +52,7 @@ export class PersonService{
         }
     }
 
-    /**
-     * Updates a user's password
-     * @param {number} person_id - The ID of the person to update
-     * @param {string} new_password - The new password to set
-     * @returns {Promise} A promise that resolves when the password is updated
-     */
-    async addNewPassword(person_id: number, new_password: string){
-        try{
-            return await this.personRepository.addNewPassword(person_id, new_password);
-        }catch(err){
-            console.log(err)
-            throw new Error("Field to update password");
-        }
-    }
+
 
     /**
      * Updates a user's email address

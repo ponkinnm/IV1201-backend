@@ -101,7 +101,6 @@ export class PersonRepository implements IPersonRepository {
               console.log('No record updated. Person not found.');
               return null;
           }
-          console.log('Passwords updated successfully:', updatedRows[0]);
           return updatedRows[0]; 
           }catch(err){
             console.error('Error updating password:', err);
