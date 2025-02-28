@@ -31,8 +31,6 @@ export class AuthService {
    * @param {string} password - The password to verify
    * @returns {Promise<Person | null>} The user if credentials are valid, null otherwise
    */
- // findUserAndVerifyPassword = async (username: string, password: string) => {
-   // const person = await this.personRepository.findUserByUsername(username);
 
   findUserAndVerifyPassword = async (usernameOrEmail: string, password: string) => {
     let person = await this.personRepository.findUserByUsername(usernameOrEmail);
@@ -58,4 +56,30 @@ export class AuthService {
     const payload = { username, name, surname, email,role_id, person_id };
     return jwt.sign(payload, this.JWT_SECRET, { expiresIn: this.JWT_EXPIRATION });
   }
+
+
+        /**
+     * Adds a new user with the provided details
+     * @param {string} name - The user's first name
+     * @param {string} surname - The user's last name
+     * @param {number} pnr - The user's personal number
+     * @param {string} email - The user's email address
+     * @param {string} username - The user's username
+     * @param {string} password - The user's password
+     * @param {number} role_id - The user's role ID
+     * @returns {Promise} A promise that resolves when the user is added
+     */
+        async addNewUser(name: string, surname:string,
+          pnr: string, 
+          email: string, 
+          username:string, 
+          password: string, 
+          role_id: number ): Promise<Person>{
+             try{
+              return await this.personRepository.addNewUser(name, surname,pnr, email, username,password, role_id);
+             } catch(err){
+                console.error("An error occurred:", err);
+                throw err;
+          }
+      }
 }

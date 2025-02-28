@@ -69,6 +69,7 @@ export class ApplicationController {
           next(err); // Automatically rolls back on error
         }
       };
+
       /**
        * Handles PUT request to update application status
        * @async

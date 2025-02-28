@@ -142,4 +142,5 @@ router.get('/competences', competenceController.getAllCompetence);
 
 
 
+
 export default router; 

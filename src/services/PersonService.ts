@@ -31,7 +31,7 @@ export class PersonService{
      * Adds a new user with the provided details
      * @param {string} name - The user's first name
      * @param {string} surname - The user's last name
-     * @param {number} pnr - The user's personal number
+     * @param {string} pnr - The user's personal number
      * @param {string} email - The user's email address
      * @param {string} username - The user's username
      * @param {string} password - The user's password
@@ -39,7 +39,7 @@ export class PersonService{
      * @returns {Promise} A promise that resolves when the user is added
      */
     async addNewUser(name: string, surname:string,
-        pnr: number, 
+        pnr: string, 
         email: string, 
         username:string, 
         password: string, 

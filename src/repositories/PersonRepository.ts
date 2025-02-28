@@ -70,7 +70,7 @@ export class PersonRepository implements IPersonRepository {
      * @param {number} role_id - The user's role ID
      * @returns {Promise<PersonDTO>} A promise that resolves with the created user's details
      */
-    async addNewUser(name: string, surname:string, pnr: number, email: string, username:string, password: string, role_id :number){
+    async addNewUser(name: string, surname:string, pnr: string, email: string, username:string, password: string, role_id :number){
         const person = await Person.create(
             {
                 name : name,
@@ -81,7 +81,7 @@ export class PersonRepository implements IPersonRepository {
                 role_id : role_id
             }
         );
-        return new PersonDTO(person);
+        return person;
     }
 
     /**

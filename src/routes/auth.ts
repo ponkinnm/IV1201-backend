@@ -38,3 +38,5 @@ const authController = new AuthController(authService);
 authRouter.post('/login', authController.login);
 
 
+
+authRouter.post('/signup', authController.signup);

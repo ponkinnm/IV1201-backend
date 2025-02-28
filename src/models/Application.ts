@@ -18,7 +18,7 @@ class Application extends Model {
 Application.init(
   {
     application_id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-    person_id: { type: DataTypes.INTEGER, allowNull: false, references: { model: Person, key: 'person_id' } },
+    person_id: { type: DataTypes.INTEGER, allowNull: false, unique: true, references: { model: Person, key: 'person_id' } },
     status_id: { type: DataTypes.INTEGER, allowNull: false, references: { model: Status, key: 'status_id' } },
     submitted_date: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
   },
