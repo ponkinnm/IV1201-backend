@@ -77,4 +77,5 @@ router.get('/applications/:application_id', applicationController.getApplication
 router.put('/applications/:application_id/status', applicationController.updateApplicationStatus);
 
 
+
 export default router; 

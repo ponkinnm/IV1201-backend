@@ -138,8 +138,8 @@ export class ApplicationRepository implements IApplicationRepository {
 
       return this.getApplicationDetailsById(application.application_id)
     }catch(err){
-      console.error('Error updating application:', err);
-      return null;
+      console.error('Error submitting an application:', err);
+      throw err;
     }
   }
 

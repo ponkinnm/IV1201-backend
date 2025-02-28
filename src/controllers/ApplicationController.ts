@@ -69,6 +69,7 @@ export class ApplicationController {
           next(err); // Automatically rolls back on error
         }
       };
+
       /**
        * Handles PUT request to update application status
        * @async
@@ -102,30 +103,5 @@ export class ApplicationController {
           next(err);
         }
       }
-      /**
-       * Handles POST request to submit a new application
-       * @async
-       * @function submitApplication
-       * @param {Request} req - Express request object containing application data in body
-       * @param {Response} res - Express response object
-       * @param {NextFunction} next - Express next function for error handling
-       * @returns {Promise<void>} - Sends JSON response with submitted application or error
-       * @throws {Error} - If there's an error submitting the application
-       * @property {number} req.body.person_id - ID of the applicant
-       * @property {Array<{competence_id: number, years_of_experience: number}>} req.body.competenceProfile - Array of competence profiles
-       * @property {Array<{from_date: Date, to_date: Date}>} req.body.availabilities - Array of availability periods
-       */
-      submitApplication :  RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> =>{
-        try{
-          const {person_id, competenceProfile, availabilities} = req.body;
 
-          const submitedApplication  = await sequelize.transaction(async () =>{
-            return await this.applicationService.submitApplication(person_id, availabilities, competenceProfile);
-          });
-
-          res.status(200).json(submitedApplication);
-        }catch(err){
-          next(err);
-        }
-      }
 }
