@@ -120,26 +120,37 @@ export class ApplicationRepository implements IApplicationRepository {
    * @param {Array<{ competence_id: number; years_of_experience: number }>} competences - Array of competence profiles
    * @returns {Promise<ApplicationDetailsDTO>} A promise that resolves with the created application details
    */
-  async submitApplication(person_id : number,
-    availabilities: Array<{from_date : Date, to_date: Date}>,
-  competences: Array<{ competence_id: number; years_of_experience: number }> ){
-
-    try{
+  async submitApplication(
+    person_id: number,
+    availabilities: Array<{from_date: Date, to_date: Date}>,
+    competences: Array<{ competence_id: number; years_of_experience: number }>
+  ) {
+    try {
+      // Check if an application already exists for this person
+      const existingApplication = await Application.findOne({ 
+        where: { person_id } 
+      });
+    
+      if (existingApplication) {
+        console.log(`Application already exists for person_id: ${person_id}`);
+        return null; 
+      }
+  
       const availabilityRepo = new AvailabilityRepository();
       const competenceRepo = new CompetenceProfileRepository();
-
+  
       const application = await Application.create({
-        person_id : person_id,
-        status_id : 1
+        person_id: person_id,
+        status_id: 1
       });
-
+  
       await competenceRepo.addNewCompetenceProfile(person_id, competences);
       await availabilityRepo.addAvailability(person_id, availabilities);
-
-      return this.getApplicationDetailsById(application.application_id)
-    }catch(err){
-      console.error('Error submitting an application:', err);
-      throw err;
+  
+      return this.getApplicationDetailsById(application.application_id);
+    } catch (err) {
+      console.error('Error submitting application:', err);
+      return null;
     }
   }
 
