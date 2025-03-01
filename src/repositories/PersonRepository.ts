@@ -17,7 +17,9 @@ export class PersonRepository implements IPersonRepository {
      */
 
     async findUserByUsername(username: string) {
-     Validators.isValidUsername(username)
+    
+     Validators.isValidUsername(username);
+
        const person = await Person.findOne({ where: { username } });
         if(!person)
             return null;
@@ -31,7 +33,9 @@ export class PersonRepository implements IPersonRepository {
      * @returns {Promise<PersonDTO>} A promise that resolves with the user details
      */
     async getUserDetailById(person_id : number){
+
         Validators.isValidId(person_id, "person_id");
+
         const person = await Person.findByPk(person_id,
             {
                 include: [ {model : Role, attributes: ['name']}]
@@ -53,7 +57,9 @@ export class PersonRepository implements IPersonRepository {
      * @returns {Promise<PersonDTO | null>} A promise that resolves with the user if found, null otherwise
      */
     async findUserByEmail(email: string){
+
         Validators.isEmail(email);
+
         const person = await Person.findOne({where : {email}});
 
         if(!person)
@@ -74,7 +80,7 @@ export class PersonRepository implements IPersonRepository {
      * @returns {Promise<PersonDTO>} A promise that resolves with the created user's details
      */
     async addNewUser(name: string, surname:string, pnr: string, email: string, username:string, password: string, role_id :number){
-       try{
+
         Validators.isName(name, "name");
         Validators.isName(surname, "surname");
         Validators.isValidPersonalNumber(pnr);
@@ -82,6 +88,7 @@ export class PersonRepository implements IPersonRepository {
         Validators.isValidUsername(username);
         Validators.isValidPassword(password);
         Validators.isValidId(role_id, "role_id");
+
         const person = await Person.create(
             {
                 name : name,
@@ -93,11 +100,6 @@ export class PersonRepository implements IPersonRepository {
             }
         );
         return person;
-
-       }catch(err){
-            throw err;
-       }
-
     }
 
     /**
@@ -110,6 +112,7 @@ export class PersonRepository implements IPersonRepository {
         try{
             Validators.isValidId(person_id, "person_id");
             Validators.isValidPassword(new_password);
+            
             const [updatedCount, updatedRows] = await Person.update(
               { password: new_password }, 
               { where: { person_id }, returning : true }
@@ -123,7 +126,7 @@ export class PersonRepository implements IPersonRepository {
           return updatedRows[0]; 
           }catch(err){
             console.error('Error updating password:', err);
-            return null;
+            throw err;
           }
     }
 
@@ -150,7 +153,7 @@ export class PersonRepository implements IPersonRepository {
           return updatedRows[0]; 
           }catch(err){
             console.error('Error updating email:', err);
-            return null;
+            throw err;
           }
     }
 
@@ -179,7 +182,7 @@ export class PersonRepository implements IPersonRepository {
       return updatedRows[0]; 
       }catch(err){
         console.error('Error updating person %d:', err, person_id);
-        return null;
+        throw err;
       }
    }
 }

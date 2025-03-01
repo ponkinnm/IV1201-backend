@@ -16,8 +16,8 @@ export class AvailabilityRepository implements IAvailabilityRepository{
     async getAllAvailabilyById(person_id :number){
 
         try {
+            Validators.isValidId(person_id, "person_id");
             const availabilities = await Availability.findAll({ where: { person_id } });
-            
             const availabilitiesDTO: AvailabilityDTO[] = availabilities.map((app) => new AvailabilityDTO(
               app.person_id,
               app.from_date,
@@ -55,7 +55,7 @@ export class AvailabilityRepository implements IAvailabilityRepository{
           return insertedAvailablility;
       } catch (error) {
           console.error('Error adding new availability:', error);
-          throw new Error('Failed to add new availability for person with person_id ${person_id}.');
+          throw error;
       }
         }
 }

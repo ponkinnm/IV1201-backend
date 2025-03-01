@@ -22,7 +22,7 @@ export class CompetenceService{
             return await this.CompetenceRepository.getAllCompetence();
         }catch (err) {
             console.error(err);
-            throw new Error('Failed to get competence');
+            throw err;
         }
     }
 

@@ -83,8 +83,8 @@ export class ApplicationRepository implements IApplicationRepository {
 
           return applicationDetail;
       }catch(error){
-
        console.log(" error fetching",error);
+       throw error;
       }
   };
 
@@ -113,6 +113,7 @@ export class ApplicationRepository implements IApplicationRepository {
     return updatedRows[0]; 
     }catch(err){
       console.error('Error updating application:', err);
+      throw err;
     }
 
   };
@@ -155,7 +156,7 @@ export class ApplicationRepository implements IApplicationRepository {
       return this.getApplicationDetailsById(application.application_id);
     } catch (err) {
       console.error('Error submitting application:', err);
-      return null;
+      throw err;
     }
   }
 

@@ -49,7 +49,7 @@ export class CompetenceProfileRepository implements ICompetenceProfileRepository
         try {
             for(const competence of competences){
                 Validators.isValidId(competence.competence_id, "competence:id");
-                Validators.isValidNumber(competence.years_of_experience);
+                Validators.isPositivNumber(competence.years_of_experience);
               }
             // Bulk insert competences for the given person_id
             const insertedCompetences = await CompetenceProfile.bulkCreate(
@@ -63,7 +63,7 @@ export class CompetenceProfileRepository implements ICompetenceProfileRepository
             return insertedCompetences;
         } catch (error) {
             console.error('Error adding new competence profiles:', error);
-            throw new Error('Failed to add new competence profiles.');
+            throw error;
         }
     }
 }
