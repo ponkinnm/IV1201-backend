@@ -7,7 +7,8 @@ import { MockPersonRepository } from "../repositories/MockPersonRepository";
 export const authRouter = Router();
 const personRepository = process.env.NODE_ENV === 'test' ? new MockPersonRepository() : new PersonRepository();
 const authService = new AuthService(personRepository);
-const authController = new AuthController(authService);
+const personService = new PersonService(personRepository);
+const authController = new AuthController(authService, personService);
 
 /**
  *  @openapi
