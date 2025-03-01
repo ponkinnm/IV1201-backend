@@ -87,7 +87,7 @@ export class AuthController {
       const { emailOrUsername } = req.body;
       
       const person = await sequelize.transaction(async () => {
-        return await this.authService.findUser(emailOrUsername);
+        return await this.PersonService.findUser(emailOrUsername);
       });
 
       if(!person){
@@ -111,7 +111,7 @@ export class AuthController {
             const {person_id , password} = req.body
 
             const updatedUser = await sequelize.transaction(async ()=>{
-                return await this.personService.addNewPassword(person_id, password);
+                return await this.authService.addNewPassword(person_id, password);
             });
             res.status(200).json(updatedUser);
         } catch(err){
