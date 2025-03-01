@@ -84,7 +84,7 @@ export class AuthController {
      * @returns {Promise<void>} - Sends JSON response with person_id if user exist in database
      * @throws {Error} - If there's an error updating the password
      */
-  varifyUser :  RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  forgotpassword :  RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try{
 
       const { emailOrUsername } = req.body;
@@ -97,7 +97,7 @@ export class AuthController {
         res.status(401).send("invalid credential, user not foud")
       }
 
-      res.status(200).json({person_id : person?.person_id});
+      res.status(200).send("A mail was sent, check your inbox");
 
     }catch(err){
       next(err);
