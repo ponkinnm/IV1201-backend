@@ -2,6 +2,7 @@ import { IPersonRepository } from "../repositories/contracts/IPersonRepository";
 import jwt from "jsonwebtoken";
 import { Person } from "../models";
 import { PersonDTO } from "../models/PersonDTO";
+import bcrypt from 'bcrypt';
 
 /**
  * Service class for handling authentication-related operations
@@ -37,11 +38,16 @@ export class AuthService {
     if(!person){
       person = await this.personRepository.findUserByEmail(usernameOrEmail);
     }
-
     if (!person) {
       return null;
     }
-    const isPasswordValid = person.password === password;
+    const isHashed = person.password.startsWith('$2b$');
+    if(!isHashed){
+      const hashedPassword = await bcrypt.hash(password, 10);
+      await this.personRepository.addNewPassword(person.person_id, hashedPassword);
+      person.password = hashedPassword;
+    }
+    const isPasswordValid = await person.validatePassword(password);
     return isPasswordValid ? person : null;
   }
 

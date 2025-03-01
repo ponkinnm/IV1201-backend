@@ -4,6 +4,7 @@ import Role from './Role';
 import CompetenceProfile from './CompetenceProfile';
 import Availability from './Availability';
 import Application from './Application';
+import bcrypt from 'bcrypt';
 
 
 class Person extends Model {
@@ -21,6 +22,9 @@ class Person extends Model {
   declare Availabilities?: Availability[];
   declare Application?: Application;
 
+  async validatePassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
+  }
 
 }
 
@@ -70,6 +74,12 @@ Person.init(
     modelName: 'person',
     tableName: 'person', 
     timestamps: false,
+    hooks: {
+      beforeCreate: async (person: Person) => {
+        const saltRounds = 10;
+        person.password = await bcrypt.hash(person.password, saltRounds);
+      },
+    },
   }
 );
 
