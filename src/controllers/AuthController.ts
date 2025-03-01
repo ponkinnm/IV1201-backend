@@ -113,7 +113,7 @@ export class AuthController {
             const updatedUser = await sequelize.transaction(async ()=>{
                 return await this.authService.addNewPassword(person_id, password);
             });
-            res.status(200).json(updatedUser);
+            res.status(200).senc({"password has been updated"});
         } catch(err){
             next(err)
         }
