@@ -6,6 +6,7 @@ import { PersonRepository } from "./PersonRepository";
 import { AvailabilityRepository } from "./AvailabilityRepository";
 import { CompetenceProfileRepository } from "./CompetenceProfileRepository";
 import { ApplicationDetailsDTO } from "../models/ApplicationDetailsDTO";
+import { Validators } from "../util/validator";
 
 /**
  * Repository class for handling application-related database operations
@@ -48,6 +49,7 @@ export class ApplicationRepository implements IApplicationRepository {
   */
   async getApplicationDetailsById(application_id : number){
       try{
+        Validators.isValidId(application_id, "application_id");
         const personRepo = new PersonRepository();
         const availabilityRepo = new AvailabilityRepository();
         const competenceRepo = new CompetenceProfileRepository();
@@ -96,6 +98,8 @@ export class ApplicationRepository implements IApplicationRepository {
   async updateApplicationStatus(application_id : number, new_status_id : number){
 
     try{
+      Validators.isValidId(application_id, "application_id");
+      Validators.isValidId(new_status_id, "status_id");
       const [updatedCount, updatedRows] = await Application.update(
         { status_id: new_status_id }, 
         { where: { application_id }, returning : true }
@@ -127,6 +131,7 @@ export class ApplicationRepository implements IApplicationRepository {
   ) {
     try {
       // Check if an application already exists for this person
+      Validators.isValidId(person_id, "person_id");
       const existingApplication = await Application.findOne({ 
         where: { person_id } 
       });

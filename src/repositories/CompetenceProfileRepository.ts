@@ -1,6 +1,7 @@
 import { ICompetenceProfileRepository } from "./contracts/ICompetenceProfileRepository";
 import { CompetenceProfile, Competence } from "../models";
 import { CompetenceProfileDTO } from "../models/CompetenceProfileDTO";
+import { Validators } from "../util/validator";
 
 /**
  * Repository class for handling competence profile-related database operations
@@ -46,6 +47,10 @@ export class CompetenceProfileRepository implements ICompetenceProfileRepository
         competences: Array<{ competence_id: number; years_of_experience: number }>
     ) {
         try {
+            for(const competence of competences){
+                Validators.isValidId(competence.competence_id, "competence:id");
+                Validators.isValidNumber(competence.years_of_experience);
+              }
             // Bulk insert competences for the given person_id
             const insertedCompetences = await CompetenceProfile.bulkCreate(
                 competences.map((comp) => ({

@@ -1,5 +1,6 @@
 import { Availability } from "../models";
 import { AvailabilityDTO } from "../models/AvailabilityDTO";
+import { Validators } from "../util/validator";
 import { IAvailabilityRepository } from "./contracts/IAvailabilityRepository";
 
 /**
@@ -39,6 +40,10 @@ export class AvailabilityRepository implements IAvailabilityRepository{
      */
     async addAvailability(person_id : number, availabilities: Array<{from_date : Date, to_date: Date}>){
         try {
+          for(const availability of availabilities){
+            Validators.isValidDate(availability.from_date, "from_date");
+            Validators.isValidDate(availability.to_date, "to_date");
+          }
           const insertedAvailablility = await Availability.bulkCreate(
             availabilities.map((avai) => ({
                   person_id,
