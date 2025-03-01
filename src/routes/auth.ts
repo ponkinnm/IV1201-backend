@@ -3,6 +3,7 @@ import { AuthController } from "../controllers/AuthController";
 import { AuthService } from "../services/AuthService";
 import { PersonRepository } from "../repositories/PersonRepository";
 import { MockPersonRepository } from "../repositories/MockPersonRepository";
+import { PersonService } from "../services/PersonService";
 
 export const authRouter = Router();
 const personRepository = process.env.NODE_ENV === 'test' ? new MockPersonRepository() : new PersonRepository();
