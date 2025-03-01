@@ -66,7 +66,10 @@ export class AuthController {
             res.status(400).json({ message: "Failed to sign up. Please check your input." });
         }
 
-        res.status(201).json({ user: addedUser });
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { password: _password, pnr: _pnr, ...userWithoutSensitiveData } = addedUser;
+        res.status(201).json({ user: userWithoutSensitiveData });
+
     } catch (err) {
         next(err);  // Passes the error to Express error handler
     }
