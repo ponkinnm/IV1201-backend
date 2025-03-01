@@ -87,7 +87,7 @@ export class AuthController {
       const { emailOrUsername } = req.body;
       
       const person = await sequelize.transaction(async () => {
-        return await this.PersonService.findUser(emailOrUsername);
+        return await this.personService.findUser(emailOrUsername);
       });
 
       if(!person){
