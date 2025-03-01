@@ -81,6 +81,6 @@ authRouter.post('/login', authController.login);
 
 authRouter.post('/signup', authController.signup);
 
-authRouter.post('/varifyUser', authController.varifyUser);
+authRouter.post('/forgotpassword', authController.forgotpassword);
 
 authRouter.put('/password', authController.updatePassword);
