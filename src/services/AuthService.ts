@@ -94,7 +94,7 @@ export class AuthService {
           return await this.personRepository.addNewPassword(person_id, new_password);
       }catch(err){
           console.log(err)
-          throw new Error("Field to update password");
+          throw new Error("Failed to update password");
       }
   }
 
