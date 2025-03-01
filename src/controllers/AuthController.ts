@@ -1,13 +1,15 @@
 import { Request, Response, NextFunction, RequestHandler } from "express";
 import sequelize from "../config/dbsetup";
 import { AuthService } from "../services/AuthService";
+import {PersonService} from "../services/PersonService";
 
 export class AuthController {
-
+  private personService;
   private authService;
 
-  constructor(authService: AuthService) {
+  constructor(authService: AuthService, personService : PersonService) {
     this.authService = authService;
+    this.personService =  personService;
   }
 
 
@@ -70,7 +72,7 @@ export class AuthController {
     }
   };
     /**
-     * Handles get request to varify a user
+     * Handles post request to varify a user
      * @async
      * @function varifyUser
      * @param {Request} req - Express request object containing email or username
@@ -101,11 +103,6 @@ export class AuthController {
 
       /**
      * Handles PUT request to update password
-     * @async
-     * @function updatePassword
-     * @param {Request} req - Express request object containing person_id and password in body
-     * @param {Response} res - Express response object
-     * @param {NextFunction} next - Express next function for error handling
      * @returns {Promise<void>} - Sends JSON response with updated user or error
      * @throws {Error} - If there's an error updating the password
      */
@@ -114,7 +111,7 @@ export class AuthController {
             const {person_id , password} = req.body
 
             const updatedUser = await sequelize.transaction(async ()=>{
-                return await this.authService.addNewPassword(person_id, password);
+                return await this.personService.addNewPassword(person_id, password);
             });
             res.status(200).json(updatedUser);
         } catch(err){
