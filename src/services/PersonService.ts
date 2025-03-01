@@ -84,5 +84,23 @@ export class PersonService{
             throw new Error("Filed to update username and password");
         }
     }
+
+    /**
+   * Verifies if a user exists and if the provided password matches
+   * @param {string} emailOrUsername - The username to verify
+   * @returns {Promise<Person | null>} The user if credentials are valid, null otherwise
+   */
+
+    findUser = async (emailOrUsername: string) => {
+      let person = await this.personRepository.findUserByUsername(emailOrUsername);
+      if(!person){
+        person = await this.personRepository.findUserByEmail(emailOrUsername);
+      }
+
+      if (!person) {
+        return null;
+      }
+      return  person;
+    }
     
 }
