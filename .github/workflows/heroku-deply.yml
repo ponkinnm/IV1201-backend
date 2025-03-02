@@ -9,6 +9,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
+      NODE_ENV: production
       HUSKY: 0
 
     steps:
