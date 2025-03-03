@@ -161,23 +161,7 @@ export class ApplicationController {
           message: 'You have already submitted an application .'
         });
         return;
-      }
-          const { competenceProfile, availabilities } = req.body;
-          
-          const submittedApplication = await sequelize.transaction(async () => {
-            return await this.applicationService.submitApplication(person_id, availabilities, competenceProfile);
-          });
-          
-         
-          if (!submittedApplication) {
-            // Application already exists or submission failed
-            res.status(409).json({ 
-              success: false, 
-              message: "You have already submitted an application ."
-            });
-            return;
-          }
-          
+      }          
           res.status(200).json(submittedApplication);
         }catch(err){
           next(err);
