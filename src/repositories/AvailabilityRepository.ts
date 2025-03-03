@@ -15,15 +15,6 @@ export class AvailabilityRepository implements IAvailabilityRepository {
    * @returns {Promise<AvailabilityDTO[]>} A promise that resolves with an array of availability DTOs
    */
   async getAllAvailabilyById(person_id: number) {
-    try {
-      const availabilities = await Availability.findAll({
-        where: { person_id }
-      });
-
-      const availabilitiesDTO: AvailabilityDTO[] = availabilities.map(
-        (app) => new AvailabilityDTO(app.person_id, app.from_date, app.to_date)
-      );
-
 
         try {
             Validators.isValidId(person_id, "person_id");
@@ -39,7 +30,8 @@ export class AvailabilityRepository implements IAvailabilityRepository {
             console.error('Error fetching availabilities:', error);
             throw error; // Propagate the error to the service/controller layer
           }
-        }
+        
+      }
     /**
      * Adds multiple availability records for a person
      * @param {number} person_id - The ID of the person to add availabilities for
