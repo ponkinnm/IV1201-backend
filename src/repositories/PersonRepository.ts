@@ -102,7 +102,7 @@ export class PersonRepository implements IPersonRepository {
             return null;
           }
     }
-  }
+  
 
   /**
    * Updates a user's email address
