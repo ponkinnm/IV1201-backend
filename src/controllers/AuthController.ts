@@ -2,6 +2,7 @@ import { Request, Response, NextFunction, RequestHandler } from "express";
 import sequelize from "../config/dbsetup";
 import { AuthService } from "../services/AuthService";
 import {PersonService} from "../services/PersonService";
+import { PersonDTO } from "../models/PersonDTO";
 
 export class AuthController {
   private personService;
@@ -74,8 +75,8 @@ export class AuthController {
         secure: true,
         sameSite: 'none' 
       });
-      const { password: _password, pnr: _pnr, ...userWithoutSensitiveData } = addedUser;
-      res.status(201).json({ user: userWithoutSensitiveData });
+      const userDTO = new PersonDTO(addedUser);
+      res.status(201).json({ user: userDTO });
     } catch (err) {
       next(err);
     }

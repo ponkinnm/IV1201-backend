@@ -103,7 +103,7 @@ export class PersonRepository implements IPersonRepository {
             }
         );
         return person;
-
+    }
   
     /**
      * Updates a user's password
@@ -120,6 +120,7 @@ export class PersonRepository implements IPersonRepository {
               { password: new_password }, 
               { where: { person_id }, returning : true }
               );
+              
           if (updatedCount === 0) {
               console.log('No record updated. Person not found.');
               return null;
@@ -175,10 +176,10 @@ export class PersonRepository implements IPersonRepository {
       
         const [updatedCount, updatedRows] = await Person.update(
           { username: new_username, password : new_password }, 
-          { where: { person_id }, returning : true }
+          { where: { person_id }, returning : true });
 
 
-      if (updatedCount === 0) {
+      if(updatedCount === 0) {
         console.log('No record updated. Person not found.');
         return null;
       }

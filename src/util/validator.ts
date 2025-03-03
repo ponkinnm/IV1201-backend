@@ -2,8 +2,7 @@ import validator from 'validator';
 
 export class Validators {
 
-    static isValidId(value : any, varName : string): void {
-        Validators.isInteger(value, varName);
+    static isValidId(value : number, varName : string): void {
         if(value <= 0){
             throw new Error(`${varName} can not be smaller than or equal to zero.`);
         }
@@ -11,9 +10,8 @@ export class Validators {
 
 
 
-    static isValidUsernameOrEmail(value: any): void {    
-        Validators.isString(value, "email");
-        const usernameRegex = /^[a-zA-Z0-9_-]{3,20}$/; // Regex for alphanumeric characters, underscores, and dashes
+    static isValidUsernameOrEmail(value: string): void {    
+        const usernameRegex = /^[a-zA-Z0-9_-]{3,20}$/; 
         if (!usernameRegex.test(value)) {
             const trimmedValue = value.trim();
         
@@ -25,16 +23,13 @@ export class Validators {
     }
 
 
-    static isPositivNumber(value : any, varName :string = "year of experince") : void {
-        Validators.isInteger(value, varName);
+    static isPositivNumber(value : number, varName :string = "year of experince") : void {
         if( value < 0){
             throw new Error(`${varName} must be a positive number.`);
         }
     }
 
-    static isName(value : any, varName :string) : void {
-        Validators.isString(value, varName );
-
+    static isName(value : string, varName :string) : void {
         if (!validator.isAlpha(value, 'en-US', { ignore: " -" })) {
             throw new Error(`${varName} must contain only letters`);
         }
@@ -43,41 +38,25 @@ export class Validators {
             throw new Error(`${varName} must be between 2 and 50 characters long.`);
         }
     }
-    static isValidPassword(value: any): void {
-        Validators.isString(value, "password");
+    static isValidPassword(value: string): void {
         if (/\s/.test(value)) {
             throw new Error(`password must not contain spaces.`);
         }
     }
 
-    static isValidPersonalNumber(value: any): void {
-        Validators.isString(value, "pnr" );
+    static isValidPersonalNumber(value: string): void {
         const sanitizedPnr = value.replace(/-/g, '');
         if (!validator.isNumeric(sanitizedPnr)) {
             throw new Error(`pnr must contain only numeric digits.`);
         }
     }
 
-    static isValidDate(value: any, varName: string): void {
+    static isValidDate(value: Date, varName: string): void {
 
         const dateStr = value instanceof Date ? value.toISOString().split('T')[0] : value;
 
         if(!validator.isDate(dateStr, {format : 'YYYY-MM-DD',strictMode: true})){
             throw new Error('${varName} must be a valid date format YYYY-MM-DD')
-        }
-    }
-
- 
-
-    static isString(value: any, varName: string){
-        if (typeof value !== 'string'){
-            throw new Error(`${varName} must be a string`);
-        }
-    }
-
-    static isInteger(value : any, varName: string){
-        if( typeof value !== 'number' || Number.isNaN(value)){
-            throw new Error(`${varName} must be a valid number.`);
         }
     }
 }
