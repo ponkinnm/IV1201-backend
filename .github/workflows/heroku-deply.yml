@@ -9,7 +9,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      NODE_ENV: production
       HUSKY: 0
 
     steps:
@@ -26,7 +25,7 @@ jobs:
         run: npm install
 
       - name: Compile TypeScript
-        run: npm run build  
+        run: npm run build
 
       - name: Install Heroku CLI (Fix Missing Heroku Command)
         run: curl https://cli-assets.heroku.com/install.sh | sh
@@ -41,3 +40,4 @@ jobs:
           dontautocreate: true
         env:
           HD_JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          NODE_ENV: production
