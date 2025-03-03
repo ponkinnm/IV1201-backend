@@ -97,7 +97,7 @@ export class PersonService {
       console.log(err);
       throw new Error('Filed to update username and password');
     }
-
+  }
 
     /**
    * Verifies if a user exists and if the provided password matches
@@ -118,3 +118,4 @@ export class PersonService {
     }
     
 }
+
