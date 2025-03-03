@@ -1,19 +1,29 @@
+
 import { Availability } from "../models";
 import { AvailabilityDTO } from "../models/AvailabilityDTO";
 import { Validators } from "../util/validator";
 import { IAvailabilityRepository } from "./contracts/IAvailabilityRepository";
 
+
 /**
  * Repository class for handling availability-related database operations
  */
-export class AvailabilityRepository implements IAvailabilityRepository{
+export class AvailabilityRepository implements IAvailabilityRepository {
+  /**
+   * Retrieves all availabilities for a specific person
+   * @param {number} person_id - The ID of the person to retrieve availabilities for
+   * @returns {Promise<AvailabilityDTO[]>} A promise that resolves with an array of availability DTOs
+   */
+  async getAllAvailabilyById(person_id: number) {
+    try {
+      const availabilities = await Availability.findAll({
+        where: { person_id }
+      });
 
-    /**
-     * Retrieves all availabilities for a specific person
-     * @param {number} person_id - The ID of the person to retrieve availabilities for
-     * @returns {Promise<AvailabilityDTO[]>} A promise that resolves with an array of availability DTOs
-     */
-    async getAllAvailabilyById(person_id :number){
+      const availabilitiesDTO: AvailabilityDTO[] = availabilities.map(
+        (app) => new AvailabilityDTO(app.person_id, app.from_date, app.to_date)
+      );
+
 
         try {
             Validators.isValidId(person_id, "person_id");
@@ -30,8 +40,6 @@ export class AvailabilityRepository implements IAvailabilityRepository{
             throw error; // Propagate the error to the service/controller layer
           }
         }
-
-
     /**
      * Adds multiple availability records for a person
      * @param {number} person_id - The ID of the person to add availabilities for
@@ -57,5 +65,5 @@ export class AvailabilityRepository implements IAvailabilityRepository{
           console.error('Error adding new availability:', error);
           throw error;
       }
-        }
+    }
 }

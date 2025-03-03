@@ -6,7 +6,6 @@ import Availability from './Availability';
 import Application from './Application';
 import bcrypt from 'bcrypt';
 
-
 class Person extends Model {
   declare person_id: number;
   declare name: string;
@@ -22,6 +21,7 @@ class Person extends Model {
   declare Availabilities?: Availability[];
   declare Application?: Application;
 
+
   async validatePassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);
   }
@@ -33,26 +33,26 @@ Person.init(
     person_id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      primaryKey: true,
+      primaryKey: true
     },
     name: {
       type: DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: true
     },
     surname: {
       type: DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: true
     },
     pnr: {
       type: DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: true
     },
     email: {
       type: DataTypes.STRING(255),
-      unique: true,
+      unique: true
     },
     password: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING(255)
     },
     role_id: {
       type: DataTypes.INTEGER,
@@ -66,8 +66,8 @@ Person.init(
     },
     username: {
       type: DataTypes.STRING(255),
-      allowNull: true,
-    },
+      allowNull: true
+    }
   },
   {
     sequelize,
@@ -80,6 +80,7 @@ Person.init(
         person.password = await bcrypt.hash(person.password, saltRounds);
       },
     },
+
   }
 );
 

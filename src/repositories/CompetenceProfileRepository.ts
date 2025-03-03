@@ -3,9 +3,11 @@ import { CompetenceProfile, Competence } from "../models";
 import { CompetenceProfileDTO } from "../models/CompetenceProfileDTO";
 import { Validators } from "../util/validator";
 
+
 /**
  * Repository class for handling competence profile-related database operations
  */
+
 export class CompetenceProfileRepository implements ICompetenceProfileRepository{
 
     /**
@@ -14,7 +16,7 @@ export class CompetenceProfileRepository implements ICompetenceProfileRepository
      * @returns {Promise<CompetenceProfileDTO[]>} A promise that resolves with an array of competence profile DTOs
      */
     async getCompetenceProfileById(person_id : number){
-
+        Validators.isValidId(person_id, "person_id");
         const competences = await CompetenceProfile.findAll({where: {person_id},
             include: [
                 {
@@ -33,7 +35,6 @@ export class CompetenceProfileRepository implements ICompetenceProfileRepository
         );
 
         return competenceProfileDTO;
-
     }
 
     /**
@@ -65,5 +66,5 @@ export class CompetenceProfileRepository implements ICompetenceProfileRepository
             console.error('Error adding new competence profiles:', error);
             throw error;
         }
-    }
+     }
 }

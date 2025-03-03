@@ -1,3 +1,4 @@
+
 import { IPersonRepository } from "./contracts/IPersonRepository";
 import { Person, Role } from "../models";
 import {PersonDTO} from '../models/PersonDTO';
@@ -5,10 +6,12 @@ import { Validators } from "../util/validator";
 
 
 
+
 /**
  * Repository class for handling person/user-related database operations
  */
 export class PersonRepository implements IPersonRepository {
+
 
     /**
      * Finds a user by their username
@@ -100,8 +103,8 @@ export class PersonRepository implements IPersonRepository {
             }
         );
         return person;
-    }
 
+  
     /**
      * Updates a user's password
      * @param {number} person_id - The ID of the person to update
@@ -116,19 +119,19 @@ export class PersonRepository implements IPersonRepository {
             const [updatedCount, updatedRows] = await Person.update(
               { password: new_password }, 
               { where: { person_id }, returning : true }
-          );
-      
+              );
           if (updatedCount === 0) {
               console.log('No record updated. Person not found.');
               return null;
           }
-          console.log('Passwords updated successfully:', updatedRows[0]);
           return updatedRows[0]; 
           }catch(err){
             console.error('Error updating password:', err);
             throw err;
           }
     }
+  
+
 
     /**
      * Updates a user's email address
@@ -169,22 +172,22 @@ export class PersonRepository implements IPersonRepository {
         Validators.isValidId(person_id, "person_id");
         Validators.isValidUsernameOrEmail(new_username);
         Validators.isValidPassword(new_password);
+      
         const [updatedCount, updatedRows] = await Person.update(
           { username: new_username, password : new_password }, 
           { where: { person_id }, returning : true }
-      );
-  
+
+
       if (updatedCount === 0) {
-          console.log('No record updated. Person not found.');
-          return null;
+        console.log('No record updated. Person not found.');
+        return null;
       }
+
       console.log('Username and password has been updated successfully:', updatedRows[0]);
       return updatedRows[0]; 
       }catch(err){
         console.error('Error updating person %d:', err, person_id);
         throw err;
-      }
-   }
+    }
+  }
 }
-
-
