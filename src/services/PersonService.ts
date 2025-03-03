@@ -1,31 +1,29 @@
-import { PersonRepository } from "../repositories/PersonRepository";
+import { PersonRepository } from '../repositories/PersonRepository';
 
 /**
  * Service class for handling person/user-related operations
  */
-export class PersonService{
-    private readonly personRepository : PersonRepository;
+export class PersonService {
+  private readonly personRepository: PersonRepository;
 
+  constructor(personRepository: PersonRepository) {
+    this.personRepository = personRepository;
+  }
 
-
-    constructor(personRepository : PersonRepository){
-        this.personRepository = personRepository;
+  /**
+   * Retrieves user details by person ID
+   * @param {number} person_id - The ID of the person to retrieve details for
+   * @returns {Promise} A promise that resolves with the user details
+   */
+  async getUserDetailsById(person_id: number) {
+    try {
+      return await this.personRepository.getUserDetailById(person_id);
+    } catch (err) {
+      console.log(err);
+      throw new Error('Field to get user detail with person_id ${person_id}');
     }
+  }
 
-
-    /**
-     * Retrieves user details by person ID
-     * @param {number} person_id - The ID of the person to retrieve details for
-     * @returns {Promise} A promise that resolves with the user details
-     */
-    async getUserDetailsById(person_id :number){
-        try{
-            return await this.personRepository.getUserDetailById(person_id);
-        }catch(err){
-            console.log(err)
-            throw new Error("Field to get user detail with person_id ${person_id}");
-        }
-    }
 
     /**
      * Adds a new user with the provided details
@@ -49,7 +47,7 @@ export class PersonService{
            } catch(err){
                console.log(err)
             throw err;
-        }
+           }
     }
 
     /**
@@ -66,8 +64,8 @@ export class PersonService{
             throw err;
         }
     }
-
     /**
+
      * Updates a user's email address
      * @param {number} person_id - The ID of the person to update
      * @param {string} new_email - The new email address to set
@@ -97,5 +95,23 @@ export class PersonService{
             throw err;
         }
     }
+  /*
+   * Verifies if a user exists and if the provided password matches
+   * @param {string} emailOrUsername - The username to verify
+   * @returns {Promise<Person | null>} The user if credentials are valid, null otherwise
+   */
+
+    findUser = async (emailOrUsername: string) => {
+      let person = await this.personRepository.findUserByUsername(emailOrUsername);
+      if(!person){
+        person = await this.personRepository.findUserByEmail(emailOrUsername);
+      }
+
+      if (!person) {
+        return null;
+      }
+      return  person;
+    }
     
 }
+

@@ -8,29 +8,31 @@ class Availability extends Model {
   declare from_date: Date;
   declare to_date: Date;
 
-
-  declare person : Person;
-
+  declare person: Person;
 }
 Availability.init(
   {
-    availability_id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-    person_id: { 
-      type: DataTypes.INTEGER, 
-      allowNull: false, 
-      references: { 
-        model: Person, 
-        key: 'person_id' 
+    availability_id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
+    person_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: Person,
+        key: 'person_id'
       }
     },
     from_date: { type: DataTypes.DATEONLY, allowNull: false },
-    to_date: { type: DataTypes.DATEONLY, allowNull: false },
+    to_date: { type: DataTypes.DATEONLY, allowNull: false }
   },
   {
     sequelize,
     modelName: 'availability',
     tableName: 'availability',
-    timestamps: false,
+    timestamps: false
   }
 );
 

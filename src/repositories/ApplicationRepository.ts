@@ -1,3 +1,4 @@
+
 import Application from "../models/Application";
 import { Person, Status } from "../models";
 import { IApplicationRepository } from "./contracts/IApplicationRepository";
@@ -8,6 +9,7 @@ import { CompetenceProfileRepository } from "./CompetenceProfileRepository";
 import { ApplicationDetailsDTO } from "../models/ApplicationDetailsDTO";
 import { Validators } from "../util/validator";
 
+
 /**
  * Repository class for handling application-related database operations
  * Handles CRUD operations for applications including:
@@ -17,7 +19,6 @@ import { Validators } from "../util/validator";
  * - Updating application status
  */
 export class ApplicationRepository implements IApplicationRepository {
-
   /**
    * Retrieves all applications from the database
    * @returns {Promise<ApplicationDTO[]>} A promise that resolves with an array of application DTOs
@@ -25,21 +26,26 @@ export class ApplicationRepository implements IApplicationRepository {
   async getAllApplications() {
     const applications = await Application.findAll({
       include: [
-        { model: Person, attributes: ['person_id', 'name', 'surname', 'email'] },
-        { model: Status, attributes: ['status_name'] },
-      ],
+        {
+          model: Person,
+          attributes: ['person_id', 'name', 'surname', 'email']
+        },
+        { model: Status, attributes: ['status_name'] }
+      ]
     });
 
-    const applicationsDTO: ApplicationDTO[] = applications.map((app) =>
-      new ApplicationDTO(
-        app.application_id,
-        app.person!.name,
-        app.person!.surname,
-        app.person!.email,
-        app.status!.status_name,
-      )
+    const applicationsDTO: ApplicationDTO[] = applications.map(
+      (app) =>
+        new ApplicationDTO(
+          app.application_id,
+          app.person!.name,
+          app.person!.surname,
+          app.person!.email,
+          app.status!.status_name
+        )
     );
     return applicationsDTO;
+
   };
 
  /**
@@ -85,8 +91,9 @@ export class ApplicationRepository implements IApplicationRepository {
       }catch(error){
        console.log(" error fetching",error);
        throw error;
-      }
-  };
+    }
+  }
+
 
 
   /**
@@ -100,23 +107,23 @@ export class ApplicationRepository implements IApplicationRepository {
     try{
       Validators.isValidId(application_id, "application_id");
       Validators.isValidId(new_status_id, "status_id");
-      const [updatedCount, updatedRows] = await Application.update(
-        { status_id: new_status_id }, 
-        { where: { application_id }, returning : true }
-    );
 
-    if (updatedCount === 0) {
+      const [updatedCount, updatedRows] = await Application.update(
+        { status_id: new_status_id },
+        { where: { application_id }, returning: true }
+      );
+
+      if (updatedCount === 0) {
         console.log('No record updated. Application not found.');
         return null;
-    }
-    console.log('Application updated successfully:', updatedRows[0]);
-    return updatedRows[0]; 
-    }catch(err){
+      }
+      console.log('Application updated successfully:', updatedRows[0]);
+      return updatedRows[0];
+    } catch (err) {
       console.error('Error updating application:', err);
       throw err;
     }
-
-  };
+  }
 
   /**
    * Add a new application with associated availabilities and competences
@@ -127,7 +134,7 @@ export class ApplicationRepository implements IApplicationRepository {
    */
   async submitApplication(
     person_id: number,
-    availabilities: Array<{from_date: Date, to_date: Date}>,
+    availabilities: Array<{ from_date: Date; to_date: Date }>,
     competences: Array<{ competence_id: number; years_of_experience: number }>
   ) {
     try {
@@ -136,29 +143,27 @@ export class ApplicationRepository implements IApplicationRepository {
       const existingApplication = await Application.findOne({ 
         where: { person_id } 
       });
-    
+
       if (existingApplication) {
         console.log(`Application already exists for person_id: ${person_id}`);
-        return null; 
+        return null;
       }
-  
+
       const availabilityRepo = new AvailabilityRepository();
       const competenceRepo = new CompetenceProfileRepository();
-  
+
       const application = await Application.create({
         person_id: person_id,
         status_id: 1
       });
-  
+
       await competenceRepo.addNewCompetenceProfile(person_id, competences);
       await availabilityRepo.addAvailability(person_id, availabilities);
-  
+
       return this.getApplicationDetailsById(application.application_id);
     } catch (err) {
       console.error('Error submitting application:', err);
       throw err;
     }
   }
-
-    
 }

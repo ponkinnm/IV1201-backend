@@ -1,5 +1,5 @@
-import { Competence } from "../../models";
+import { Competence } from '../../models';
 
-export interface ICompetenceRepository{
-    getAllCompetence() : Promise<Competence[]>;
+export interface ICompetenceRepository {
+  getAllCompetence(): Promise<Competence[]>;
 }

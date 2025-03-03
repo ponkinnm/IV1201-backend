@@ -1,17 +1,14 @@
-import { CompetenceRepository } from "../repositories/ComptenceRepository";
+import { CompetenceRepository } from '../repositories/ComptenceRepository';
 
 /**
  * Service class for handling competence-related operations
  */
-export class CompetenceService{
-    private readonly CompetenceRepository : CompetenceRepository;
+export class CompetenceService {
+  private readonly CompetenceRepository: CompetenceRepository;
 
-
-
-    constructor (personRepository : CompetenceRepository){
-        this.CompetenceRepository = personRepository;
-    }
-
+  constructor(personRepository: CompetenceRepository) {
+    this.CompetenceRepository = personRepository;
+  }
 
     /**
      * Retrieves all competences
@@ -25,5 +22,4 @@ export class CompetenceService{
             throw err;
         }
     }
-
 }

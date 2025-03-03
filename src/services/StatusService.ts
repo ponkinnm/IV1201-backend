@@ -1,14 +1,14 @@
-import { StatusRepository } from "../repositories/StatusRepository";
+import { StatusRepository } from '../repositories/StatusRepository';
 
 /**
  * Service class for handling status-related operations
  */
-export class StatusService{
-    private readonly statusRepo : StatusRepository;
+export class StatusService {
+  private readonly statusRepo: StatusRepository;
 
-    constructor(statusRepo : StatusRepository){
-        this.statusRepo = statusRepo;
-    }
+  constructor(statusRepo: StatusRepository) {
+    this.statusRepo = statusRepo;
+  }
 
 
     /**
