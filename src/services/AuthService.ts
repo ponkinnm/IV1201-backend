@@ -1,29 +1,31 @@
-import { IPersonRepository } from "../repositories/contracts/IPersonRepository";
-import jwt from "jsonwebtoken";
-import { Person } from "../models";
-import { PersonDTO } from "../models/PersonDTO";
+import { IPersonRepository } from '../repositories/contracts/IPersonRepository';
+import jwt from 'jsonwebtoken';
+import { Person } from '../models';
+import { PersonDTO } from '../models/PersonDTO';
 
 /**
  * Service class for handling authentication-related operations
  */
 export class AuthService {
- private readonly personRepository: IPersonRepository;
- private readonly JWT_SECRET: string;
- public readonly JWT_EXPIRATION = '30m';
- public readonly JWT_COOKIE_NAME = 'accessToken';
+  private readonly personRepository: IPersonRepository;
+  private readonly JWT_SECRET: string;
+  public readonly JWT_EXPIRATION = '30m';
+  public readonly JWT_COOKIE_NAME = 'accessToken';
 
   /**
    * Check if a person (user) is a recruiter
    */
- public static isRecruiter  = (personDTO?: PersonDTO) => {
-  return !!(personDTO && personDTO.role_id === 1);
- }
+  public static isRecruiter = (personDTO?: PersonDTO) => {
+    return !!(personDTO && personDTO.role_id === 1);
+  };
 
   constructor(personRepository: IPersonRepository) {
     this.personRepository = personRepository;
-    this.JWT_SECRET = process.env.NODE_ENV === 'test' ? 'dummy' : process.env.JWT_SECRET as string;
+    this.JWT_SECRET =
+      process.env.NODE_ENV === 'test'
+        ? 'dummy'
+        : (process.env.JWT_SECRET as string);
   }
-
 
   /**
    * Verifies if a user exists and if the provided password matches
@@ -32,9 +34,13 @@ export class AuthService {
    * @returns {Promise<Person | null>} The user if credentials are valid, null otherwise
    */
 
-  findUserAndVerifyPassword = async (usernameOrEmail: string, password: string) => {
-    let person = await this.personRepository.findUserByUsername(usernameOrEmail);
-    if(!person){
+  findUserAndVerifyPassword = async (
+    usernameOrEmail: string,
+    password: string
+  ) => {
+    let person =
+      await this.personRepository.findUserByUsername(usernameOrEmail);
+    if (!person) {
       person = await this.personRepository.findUserByEmail(usernameOrEmail);
     }
 
@@ -43,7 +49,7 @@ export class AuthService {
     }
     const isPasswordValid = person.password === password;
     return isPasswordValid ? person : null;
-  }
+  };
 
   /**
    * Generates a JWT token for an authenticated user
@@ -52,11 +58,12 @@ export class AuthService {
    */
   generateJwtToken = (user: Person) => {
     const { username, name, surname, email, role_id, person_id } = user;
-    
-    const payload = { username, name, surname, email,role_id, person_id };
-    return jwt.sign(payload, this.JWT_SECRET, { expiresIn: this.JWT_EXPIRATION });
-  }
 
+    const payload = { username, name, surname, email, role_id, person_id };
+    return jwt.sign(payload, this.JWT_SECRET, {
+      expiresIn: this.JWT_EXPIRATION
+    });
+  };
 
         /**
      * Adds a new user with the provided details
@@ -97,7 +104,4 @@ export class AuthService {
           throw new Error("Failed to update password");
       }
   }
-
-  
-
 }

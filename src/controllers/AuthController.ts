@@ -12,7 +12,6 @@ export class AuthController {
     this.personService =  personService;
   }
 
-
   login: RequestHandler = async (req, res, next) => {
     try {
       const { username, password } = req.body;
@@ -20,29 +19,33 @@ export class AuthController {
         res.status(400).send('Missing username or password');
         return;
       }
-      const user = await this.authService.findUserAndVerifyPassword(username, password);
+      const user = await this.authService.findUserAndVerifyPassword(
+        username,
+        password
+      );
 
-    if (!user) {
-      res.status(401).send('Invalid username or password');
-      return;
-    }
+      if (!user) {
+        res.status(401).send('Invalid username or password');
+        return;
+      }
 
-    const accessToken = this.authService.generateJwtToken(user);
+      const accessToken = this.authService.generateJwtToken(user);
 
+      res.cookie(this.authService.JWT_COOKIE_NAME, accessToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none'
+      });
 
-
-    res.cookie(this.authService.JWT_COOKIE_NAME, accessToken, { 
-      httpOnly: true, 
-      secure: true,
-      sameSite: 'none' 
-    });
-
-    res.json({ username: user.username, name: user.name, id: user.person_id })}
-    catch (err) {
+      res.json({
+        username: user.username,
+        name: user.name,
+        id: user.person_id
+      });
+    } catch (err) {
       next(err);
     }
-  }
-
+  };
 
   /**
      * Handles POST request to add a new user
@@ -122,5 +125,3 @@ export class AuthController {
         }
     }
 }
-
-

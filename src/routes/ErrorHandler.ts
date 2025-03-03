@@ -1,17 +1,16 @@
-import { ErrorRequestHandler, Express } from "express";
+import { ErrorRequestHandler, Express } from 'express';
 
 class ErrorHandler {
-
   /**
    * Fallback error handler - all errors should be caught by this handler (if not caught earlier)
    */
   private fallback: ErrorRequestHandler = (err, req, res, next) => {
     console.error(err);
-    if(res.headersSent) {
+    if (res.headersSent) {
       return next(err);
     }
     res.status(500).send('Server error, please try again later');
-  }
+  };
 
   /**
    * Register error handlers

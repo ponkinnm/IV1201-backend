@@ -1,15 +1,29 @@
-import { Person } from "../../models";
-import { PersonDTO } from "../../models/PersonDTO";
-
+import { Person } from '../../models';
+import { PersonDTO } from '../../models/PersonDTO';
 
 export interface IPersonRepository {
   findUserByUsername(username: string): Promise<Person | null>;
-  getUserDetailById(person_id : number): Promise<PersonDTO | null>;
+  getUserDetailById(person_id: number): Promise<PersonDTO | null>;
 
   findUserByEmail(email: string): Promise<Person | null>;
-  
-  addNewUser(name: string, surname:string, pnr: string, email: string, username:string, password: string, role_id :number) : Promise<Person>;
-  addNewPassword(person_id: number, new_password: string) : Promise<Person | null>;
-  addNewEmail(person_id :number, new_email: string): Promise<Person | null>;
-  addUsernameAndPassword(person_id : number, username: string, password: string): Promise<Person | null>;
+
+  addNewUser(
+    name: string,
+    surname: string,
+    pnr: string,
+    email: string,
+    username: string,
+    password: string,
+    role_id: number
+  ): Promise<Person>;
+  addNewPassword(
+    person_id: number,
+    new_password: string
+  ): Promise<Person | null>;
+  addNewEmail(person_id: number, new_email: string): Promise<Person | null>;
+  addUsernameAndPassword(
+    person_id: number,
+    username: string,
+    password: string
+  ): Promise<Person | null>;
 }
