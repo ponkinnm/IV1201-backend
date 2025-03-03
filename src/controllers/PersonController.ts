@@ -105,32 +105,8 @@ export class PersonController {
     }
   };
 
-  /**
-   * Handles PUT request to update password
-   * @async
-   * @function updatePassword
-   * @param {Request} req - Express request object containing person_id and password in body
-   * @param {Response} res - Express response object
-   * @param {NextFunction} next - Express next function for error handling
-   * @returns {Promise<void>} - Sends JSON response with updated user or error
-   * @throws {Error} - If there's an error updating the password
-   */
-  updatePassword: RequestHandler = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<void> => {
-    try {
-      const { person_id, password } = req.body;
 
-      const updatedUser = await sequelize.transaction(async () => {
-        return await this.personService.addNewPassword(person_id, password);
-      });
-      res.status(200).json(updatedUser);
-    } catch (err) {
-      next(err);
-    }
-  };
+
 
   /**
    * Handles GET request to retrieve user details by ID

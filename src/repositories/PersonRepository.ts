@@ -80,30 +80,29 @@ export class PersonRepository implements IPersonRepository {
     return person;
   }
 
-  /**
-   * Updates a user's password
-   * @param {number} person_id - The ID of the person to update
-   * @param {string} new_password - The new password to set
-   * @returns {Promise} A promise that resolves when the password is updated
-   */
-  async addNewPassword(person_id: number, new_password: string) {
-    try {
-      const [updatedCount, updatedRows] = await Person.update(
-        { password: new_password },
-        { where: { person_id }, returning: true }
-      );
-
-      if (updatedCount === 0) {
-        console.log('No record updated. Person not found.');
-        return null;
-      }
-      console.log('Passwords updated successfully:', updatedRows[0]);
-      return updatedRows[0];
-    } catch (err) {
-      console.error('Error updating password:', err);
-      return null;
+    /**
+     * Updates a user's password
+     * @param {number} person_id - The ID of the person to update
+     * @param {string} new_password - The new password to set
+     * @returns {Promise} A promise that resolves when the password is updated
+     */
+    async addNewPassword(person_id: number, new_password: string){
+        try{
+            const [updatedCount, updatedRows] = await Person.update(
+              { password: new_password }, 
+              { where: { person_id }, returning : true }
+              );
+          if (updatedCount === 0) {
+              console.log('No record updated. Person not found.');
+              return null;
+          }
+          return updatedRows[0]; 
+          }catch(err){
+            console.error('Error updating password:', err);
+            return null;
+          }
     }
-  }
+  
 
   /**
    * Updates a user's email address

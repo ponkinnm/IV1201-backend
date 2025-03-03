@@ -65,39 +65,43 @@ export class AuthService {
     });
   };
 
-  /**
-   * Adds a new user with the provided details
-   * @param {string} name - The user's first name
-   * @param {string} surname - The user's last name
-   * @param {number} pnr - The user's personal number
-   * @param {string} email - The user's email address
-   * @param {string} username - The user's username
-   * @param {string} password - The user's password
-   * @param {number} role_id - The user's role ID
-   * @returns {Promise} A promise that resolves when the user is added
-   */
-  async addNewUser(
-    name: string,
-    surname: string,
-    pnr: string,
-    email: string,
-    username: string,
-    password: string,
-    role_id: number
-  ): Promise<Person> {
-    try {
-      return await this.personRepository.addNewUser(
-        name,
-        surname,
-        pnr,
-        email,
-        username,
-        password,
-        role_id
-      );
-    } catch (err) {
-      console.error('An error occurred:', err);
-      throw err;
-    }
+        /**
+     * Adds a new user with the provided details
+     * @param {string} name - The user's first name
+     * @param {string} surname - The user's last name
+     * @param {number} pnr - The user's personal number
+     * @param {string} email - The user's email address
+     * @param {string} username - The user's username
+     * @param {string} password - The user's password
+     * @param {number} role_id - The user's role ID
+     * @returns {Promise} A promise that resolves when the user is added
+     */
+        async addNewUser(name: string, surname:string,
+          pnr: string, 
+          email: string, 
+          username:string, 
+          password: string, 
+          role_id: number ): Promise<Person>{
+             try{
+              return await this.personRepository.addNewUser(name, surname,pnr, email, username,password, role_id);
+             } catch(err){
+                console.error("An error occurred:", err);
+                throw err;
+          }
+      }
+
+    /**
+     * Updates a user's password
+     * @param {number} person_id - The ID of the person to update
+     * @param {string} new_password - The new password to set
+     * @returns {Promise} A promise that resolves when the password is updated
+     */
+    async addNewPassword(person_id: number, new_password: string){
+      try{
+          return await this.personRepository.addNewPassword(person_id, new_password);
+      }catch(err){
+          console.log(err)
+          throw new Error("Failed to update password");
+      }
   }
 }
