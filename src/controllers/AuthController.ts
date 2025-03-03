@@ -10,7 +10,7 @@ export class AuthController {
     this.authService = authService;
   }
 
-  login: RequestHandler = async (req, res, next) => {
+  login: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
     try {
       const { username, password } = req.body;
       if (!username || !password) {
@@ -40,11 +40,8 @@ export class AuthController {
 
 /**
  * function to hanlde user log out
- * @param req 
- * @param res 
- * @param next 
  */
-  logout: RequestHandler = (_req, res, next) => {
+  logout: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
     try{
     res.clearCookie(this.authService.JWT_COOKIE_NAME);
     res.status(200).json({ message: 'Logged out successfully' });
@@ -53,12 +50,9 @@ export class AuthController {
   }
   }
 
-
-  
   signup: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { name, surname, pnr, email, username, password, role_id } = req.body;
-      console.log("email is: ", email);
 
       const addedUser = await sequelize.transaction(async () => {
         return await this.authService.addNewUser(name, surname, pnr, email, username, password, role_id);
