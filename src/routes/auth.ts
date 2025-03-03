@@ -1,7 +1,7 @@
-import { Router } from "express";
-import { AuthController } from "../controllers/AuthController";
-import { AuthService } from "../services/AuthService";
-import { PersonRepository } from "../repositories/PersonRepository";
+import { Router } from 'express';
+import { AuthController } from '../controllers/AuthController';
+import { AuthService } from '../services/AuthService';
+import { PersonRepository } from '../repositories/PersonRepository';
 import { MockPersonRepository } from "../repositories/MockPersonRepository";
 
 export const authRouter = Router();
@@ -40,3 +40,6 @@ authRouter.post('/login', authController.login);
 
 
 authRouter.post('/signup', authController.signup);
+
+// Add logout route
+authRouter.post('/logout', authController.logout);

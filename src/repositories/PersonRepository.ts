@@ -18,7 +18,7 @@ export class PersonRepository implements IPersonRepository {
 
     async findUserByUsername(username: string) {
     
-     Validators.isValidUsername(username);
+     Validators.isValidUsernameOrEmail(username);
 
        const person = await Person.findOne({ where: { username } });
         if(!person)
@@ -58,7 +58,7 @@ export class PersonRepository implements IPersonRepository {
      */
     async findUserByEmail(email: string){
 
-        Validators.isEmail(email);
+        Validators.isValidUsernameOrEmail(email);
 
         const person = await Person.findOne({where : {email}});
 
@@ -84,8 +84,8 @@ export class PersonRepository implements IPersonRepository {
         Validators.isName(name, "name");
         Validators.isName(surname, "surname");
         Validators.isValidPersonalNumber(pnr);
-        Validators.isEmail(email);
-        Validators.isValidUsername(username);
+        Validators.isValidUsernameOrEmail(email);
+        Validators.isValidUsernameOrEmail(username);
         Validators.isValidPassword(password);
         Validators.isValidId(role_id, "role_id");
 
@@ -112,7 +112,7 @@ export class PersonRepository implements IPersonRepository {
         try{
             Validators.isValidId(person_id, "person_id");
             Validators.isValidPassword(new_password);
-            
+
             const [updatedCount, updatedRows] = await Person.update(
               { password: new_password }, 
               { where: { person_id }, returning : true }
@@ -139,7 +139,7 @@ export class PersonRepository implements IPersonRepository {
     async addNewEmail(person_id :number, new_email: string){
         try{
             Validators.isValidId(person_id, "person_id");
-            Validators.isEmail(new_email);
+            Validators.isValidUsernameOrEmail(new_email);
             const [updatedCount, updatedRows] = await Person.update(
               { email: new_email }, 
               { where: { person_id }, returning : true }
@@ -167,7 +167,7 @@ export class PersonRepository implements IPersonRepository {
     async addUsernameAndPassword(person_id : number, new_username: string, new_password: string){
     try{
         Validators.isValidId(person_id, "person_id");
-        Validators.isValidUsername(new_username);
+        Validators.isValidUsernameOrEmail(new_username);
         Validators.isValidPassword(new_password);
         const [updatedCount, updatedRows] = await Person.update(
           { username: new_username, password : new_password }, 

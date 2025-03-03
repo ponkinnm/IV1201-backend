@@ -120,7 +120,7 @@ export class ApplicationController {
           // Get person_id from the authenticated user instead of request body
           const person_id = req.user!.person_id;
 
-          
+          console.log("person_id: ", person_id);
           const { competenceProfile, availabilities } = req.body;
           
           const submittedApplication = await sequelize.transaction(async () => {

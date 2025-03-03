@@ -10,11 +10,18 @@ export class Validators {
     }
 
 
-    static isEmail(value: any) : void {
+
+    static isValidUsernameOrEmail(value: any): void {    
         Validators.isString(value, "email");
-        if(!validator.isEmail(value) ){
-            throw new Error(`Invalid email format.`);
+        const usernameRegex = /^[a-zA-Z0-9_-]{3,20}$/; // Regex for alphanumeric characters, underscores, and dashes
+        if (!usernameRegex.test(value)) {
+            const trimmedValue = value.trim();
+        
+            if (!validator.isEmail(trimmedValue)) {
+                throw new Error(`Invalid email format.`);
+            }
         }
+    
     }
 
 
@@ -60,13 +67,7 @@ export class Validators {
         }
     }
 
-    static isValidUsername(value: any): void{
-        Validators.isString(value, "username");
-        const usernameRegex = /^[a-zA-Z0-9_-]{3,20}$/; // Regex for alphanumeric characters, underscores, and dashes
-        if (!usernameRegex.test(value)) {
-            throw new Error(`username must be between 3 and 20 characters long and can only contain letters, numbers, underscores, or dashes.`);
-        }
-    }
+ 
 
     static isString(value: any, varName: string){
         if (typeof value !== 'string'){

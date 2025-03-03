@@ -75,6 +75,7 @@ export class AuthService {
      * @param {number} role_id - The user's role ID
      * @returns {Promise} A promise that resolves when the user is added
      */
+    //name, surname, pnr, email, username, password, role_id
         async addNewUser(name: string, surname:string,
           pnr: string, 
           email: string, 
@@ -82,7 +83,7 @@ export class AuthService {
           password: string, 
           role_id: number ): Promise<Person>{
              try{
-              return await this.personRepository.addNewUser(name, surname,pnr, email, username,password, role_id);
+              return await this.personRepository.addNewUser(name, surname, pnr, email, username,password, role_id);
              } catch(err){
                 console.error("An error occurred:", err);
                 throw err;
