@@ -59,7 +59,6 @@ export class AvailabilityRepository implements IAvailabilityRepository {
                   to_date: avai.to_date,
               }))
           );
-
           return insertedAvailablility;
       } catch (error) {
           console.error('Error adding new availability:', error);
