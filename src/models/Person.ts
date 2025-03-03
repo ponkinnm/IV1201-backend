@@ -5,7 +5,6 @@ import CompetenceProfile from './CompetenceProfile';
 import Availability from './Availability';
 import Application from './Application';
 
-
 class Person extends Model {
   declare person_id: number;
   declare name: string;
@@ -20,8 +19,6 @@ class Person extends Model {
   declare CompetenceProfiles?: CompetenceProfile[];
   declare Availabilities?: Availability[];
   declare Application?: Application;
-
-
 }
 
 Person.init(
@@ -29,26 +26,26 @@ Person.init(
     person_id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      primaryKey: true,
+      primaryKey: true
     },
     name: {
       type: DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: true
     },
     surname: {
       type: DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: true
     },
     pnr: {
       type: DataTypes.STRING(255),
-      allowNull: true,
+      allowNull: true
     },
     email: {
       type: DataTypes.STRING(255),
-      unique: true,
+      unique: true
     },
     password: {
-      type: DataTypes.STRING(255),
+      type: DataTypes.STRING(255)
     },
     role_id: {
       type: DataTypes.INTEGER,
@@ -62,14 +59,14 @@ Person.init(
     },
     username: {
       type: DataTypes.STRING(255),
-      allowNull: true,
-    },
+      allowNull: true
+    }
   },
   {
     sequelize,
     modelName: 'person',
-    tableName: 'person', 
-    timestamps: false,
+    tableName: 'person',
+    timestamps: false
   }
 );
 

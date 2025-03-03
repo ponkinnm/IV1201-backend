@@ -1,4 +1,4 @@
-import Person from "./Person";
+import Person from './Person';
 
 export class PersonDTO {
   person_id: number;
