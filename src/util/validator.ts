@@ -56,7 +56,7 @@ export class Validators {
         const dateStr = value instanceof Date ? value.toISOString().split('T')[0] : value;
 
         if(!validator.isDate(dateStr, {format : 'YYYY-MM-DD',strictMode: true})){
-            throw new Error('${varName} must be a valid date format YYYY-MM-DD')
+            throw new Error(`${varName} must be a valid date format YYYY-MM-DD`)
         }
     }
 }
