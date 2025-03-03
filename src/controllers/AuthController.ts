@@ -2,6 +2,7 @@ import { Request, Response, NextFunction, RequestHandler } from "express";
 import sequelize from "../config/dbsetup";
 import { AuthService } from "../services/AuthService";
 import {PersonService} from "../services/PersonService";
+import { PersonDTO } from "../models/PersonDTO";
 
 export class AuthController {
   private personService;
@@ -12,17 +13,16 @@ export class AuthController {
     this.personService =  personService;
   }
 
-  login: RequestHandler = async (req, res, next) => {
+  login: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
     try {
       const { username, password } = req.body;
       if (!username || !password) {
         res.status(400).send('Missing username or password');
         return;
       }
-      const user = await this.authService.findUserAndVerifyPassword(
-        username,
-        password
-      );
+
+      const user = await this.authService.findUserAndVerifyPassword(username, password);
+
 
       if (!user) {
         res.status(401).send('Invalid username or password');
@@ -31,52 +31,58 @@ export class AuthController {
 
       const accessToken = this.authService.generateJwtToken(user);
 
-      res.cookie(this.authService.JWT_COOKIE_NAME, accessToken, {
-        httpOnly: true,
+
+      res.cookie(this.authService.JWT_COOKIE_NAME, accessToken, { 
+        httpOnly: true, 
         secure: true,
-        sameSite: 'none'
+        sameSite: 'none' 
       });
 
-      res.json({
-        username: user.username,
-        name: user.name,
-        id: user.person_id
-      });
+      res.json({ username: user.username, name: user.name, id: user.person_id });
     } catch (err) {
       next(err);
     }
-  };
+  }
 
-  /**
-     * Handles POST request to add a new user
-     * @async
-     * @function addNewUser
-     * @param {Request} req - Express request object containing user details in body
-     * @param {Response} res - Express response object
-     * @param {NextFunction} next - Express next function for error handling
-     * @returns {Promise<void>} - Sends JSON response with added user or error
-     * @throws {Error} - If there's an error adding the user
-     */
+/**
+ * function to hanlde user log out
+ */
+  logout: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
+    try{
+    res.clearCookie(this.authService.JWT_COOKIE_NAME);
+    res.status(200).json({ message: 'Logged out successfully' });
+  }catch(err){
+    next(err);
+    }
+  }
+
   signup: RequestHandler = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-        const { name, surname, pnr, email, username, password, role_id } = req.body;
-        
-        const addedUser = await sequelize.transaction(async () => {
-            return await this.authService.addNewUser(name, surname, pnr, email, username, password, role_id);
-        });
+      const { name, surname, pnr, email, username, password, role_id } = req.body;
 
-        if (!addedUser) {
-            res.status(400).json({ message: "Failed to sign up. Please check your input." });
-        }
+      const addedUser = await sequelize.transaction(async () => {
+        return await this.authService.addNewUser(name, surname, pnr, email, username, password, role_id);
+      });
 
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { password: _password, pnr: _pnr, ...userWithoutSensitiveData } = addedUser;
-        res.status(201).json({ user: userWithoutSensitiveData });
+      if (!addedUser) {
+        res.status(401).send("failed to signup");
+      }
+      
+      const accessToken = this.authService.generateJwtToken(addedUser);
 
+      res.cookie(this.authService.JWT_COOKIE_NAME, accessToken, { 
+        httpOnly: true, 
+        secure: true,
+        sameSite: 'none' 
+      });
+      const userDTO = new PersonDTO(addedUser);
+      res.status(201).json({ user: userDTO });
     } catch (err) {
-        next(err);  // Passes the error to Express error handler
+      next(err);
     }
-  };
+  }
+
+
     /**
      * Handles post request to varify a user
      * @async
@@ -124,4 +130,5 @@ export class AuthController {
             next(err)
         }
     }
+
 }

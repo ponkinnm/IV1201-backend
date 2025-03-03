@@ -10,16 +10,17 @@ export class StatusService {
     this.statusRepo = statusRepo;
   }
 
-  /**
-   * Retrieves all statuses
-   * @returns {Promise} A promise that resolves with all statuses
-   */
-  async getAllStatus() {
-    try {
-      return await this.statusRepo.getAllStatus();
-    } catch (err) {
-      console.log(err);
-      throw new Error('Field to fetch status from Database');
+
+    /**
+     * Retrieves all statuses
+     * @returns {Promise} A promise that resolves with all statuses
+     */
+    async getAllStatus(){
+        try{
+            return await this.statusRepo.getAllStatus();
+        }catch(err){
+            console.log(err);
+            throw err;
+        }
     }
-  }
 }

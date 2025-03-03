@@ -161,11 +161,10 @@ export class ApplicationController {
           message: 'You have already submitted an application .'
         });
         return;
-      }
-
-      res.status(200).json(submittedApplication);
-    } catch (err) {
-      next(err);
-    }
-  };
+      }          
+          res.status(200).json(submittedApplication);
+        }catch(err){
+          next(err);
+        }
+      };
 }

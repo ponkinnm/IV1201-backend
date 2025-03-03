@@ -1,8 +1,7 @@
-
-import { Router } from "express";
-import { AuthController } from "../controllers/AuthController";
-import { AuthService } from "../services/AuthService";
-import { PersonRepository } from "../repositories/PersonRepository";
+import { Router } from 'express';
+import { AuthController } from '../controllers/AuthController';
+import { AuthService } from '../services/AuthService';
+import { PersonRepository } from '../repositories/PersonRepository';
 import { MockPersonRepository } from "../repositories/MockPersonRepository";
 import { PersonService } from "../services/PersonService";
 
@@ -87,6 +86,11 @@ authRouter.post('/login', authController.login);
 
 authRouter.post('/signup', authController.signup);
 
+
+// Add logout route
+authRouter.post('/logout', authController.logout);
+
 authRouter.post('/forgotpassword', authController.forgotpassword);
 
 authRouter.put('/password', authController.updatePassword);
+

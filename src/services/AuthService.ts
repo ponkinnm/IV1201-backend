@@ -1,7 +1,9 @@
-import { IPersonRepository } from '../repositories/contracts/IPersonRepository';
-import jwt from 'jsonwebtoken';
-import { Person } from '../models';
-import { PersonDTO } from '../models/PersonDTO';
+import { IPersonRepository } from "../repositories/contracts/IPersonRepository";
+import jwt from "jsonwebtoken";
+import { Person } from "../models";
+import { PersonDTO } from "../models/PersonDTO";
+import bcrypt from 'bcrypt';
+
 
 /**
  * Service class for handling authentication-related operations
@@ -43,11 +45,16 @@ export class AuthService {
     if (!person) {
       person = await this.personRepository.findUserByEmail(usernameOrEmail);
     }
-
     if (!person) {
       return null;
     }
-    const isPasswordValid = person.password === password;
+    const isHashed = person.password.startsWith('$2b$');
+    if(!isHashed){
+      const hashedPassword = await bcrypt.hash(password, 10);
+      await this.personRepository.addNewPassword(person.person_id, hashedPassword);
+      person.password = hashedPassword;
+    }
+    const isPasswordValid = await person.validatePassword(password);
     return isPasswordValid ? person : null;
   };
 
@@ -76,6 +83,7 @@ export class AuthService {
      * @param {number} role_id - The user's role ID
      * @returns {Promise} A promise that resolves when the user is added
      */
+    //name, surname, pnr, email, username, password, role_id
         async addNewUser(name: string, surname:string,
           pnr: string, 
           email: string, 
@@ -83,7 +91,7 @@ export class AuthService {
           password: string, 
           role_id: number ): Promise<Person>{
              try{
-              return await this.personRepository.addNewUser(name, surname,pnr, email, username,password, role_id);
+              return await this.personRepository.addNewUser(name, surname, pnr, email, username,password, role_id);
              } catch(err){
                 console.error("An error occurred:", err);
                 throw err;

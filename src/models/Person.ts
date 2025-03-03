@@ -4,6 +4,7 @@ import Role from './Role';
 import CompetenceProfile from './CompetenceProfile';
 import Availability from './Availability';
 import Application from './Application';
+import bcrypt from 'bcrypt';
 
 class Person extends Model {
   declare person_id: number;
@@ -19,6 +20,12 @@ class Person extends Model {
   declare CompetenceProfiles?: CompetenceProfile[];
   declare Availabilities?: Availability[];
   declare Application?: Application;
+
+
+  async validatePassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
+  }
+
 }
 
 Person.init(
@@ -65,8 +72,15 @@ Person.init(
   {
     sequelize,
     modelName: 'person',
-    tableName: 'person',
-    timestamps: false
+    tableName: 'person', 
+    timestamps: false,
+    hooks: {
+      beforeCreate: async (person: Person) => {
+        const saltRounds = 10;
+        person.password = await bcrypt.hash(person.password, saltRounds);
+      },
+    },
+
   }
 );
 

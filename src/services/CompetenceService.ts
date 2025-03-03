@@ -10,16 +10,16 @@ export class CompetenceService {
     this.CompetenceRepository = personRepository;
   }
 
-  /**
-   * Retrieves all competences
-   * @returns {Promise} A promise that resolves with all competences
-   */
-  async getAllCompetences() {
-    try {
-      return await this.CompetenceRepository.getAllCompetence();
-    } catch (err) {
-      console.error(err);
-      throw new Error('Failed to get competence');
+    /**
+     * Retrieves all competences
+     * @returns {Promise} A promise that resolves with all competences
+     */
+    async getAllCompetences(){
+        try{
+            return await this.CompetenceRepository.getAllCompetence();
+        }catch (err) {
+            console.error(err);
+            throw err;
+        }
     }
-  }
 }
