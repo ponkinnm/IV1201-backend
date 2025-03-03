@@ -38,9 +38,19 @@ export class AuthController {
     }
   }
 
-  logout: RequestHandler = (req, res, next) => {
+/**
+ * function to hanlde user log out
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+  logout: RequestHandler = (_req, res, next) => {
+    try{
     res.clearCookie(this.authService.JWT_COOKIE_NAME);
     res.status(200).json({ message: 'Logged out successfully' });
+  }catch(err){
+    next(err);
+  }
   }
 
 
