@@ -1,6 +1,5 @@
-import { Status } from "../../models";
+import { Status } from '../../models';
 
-
-export interface IStatusRepository{
-    getAllStatus() : Promise<Status[]>;
+export interface IStatusRepository {
+  getAllStatus(): Promise<Status[]>;
 }

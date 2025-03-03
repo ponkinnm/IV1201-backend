@@ -15,18 +15,29 @@ class CompetenceProfile extends Model {
 
 CompetenceProfile.init(
   {
-    competence_profile_id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-    person_id: { type: DataTypes.INTEGER, allowNull: false, references: { model: Person, key: 'person_id' } },
-    competence_id: { type: DataTypes.INTEGER, allowNull: false, references: { model: Competence, key: 'competence_id' } },
-    years_of_experience: { type: DataTypes.DECIMAL(4, 2), allowNull: false },
+    competence_profile_id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
+    person_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: { model: Person, key: 'person_id' }
+    },
+    competence_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: { model: Competence, key: 'competence_id' }
+    },
+    years_of_experience: { type: DataTypes.DECIMAL(4, 2), allowNull: false }
   },
   {
     sequelize,
     modelName: 'competence_profile',
     tableName: 'competence_profile',
-    timestamps: false,
+    timestamps: false
   }
 );
-
 
 export default CompetenceProfile;

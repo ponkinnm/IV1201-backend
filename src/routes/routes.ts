@@ -1,15 +1,13 @@
 import { Router } from 'express';
-import { ApplicationController } from "../controllers/ApplicationController";
-import { authMiddleware } from "../middleware/middleware_auth";
-import { CompetenceController } from "../controllers/CompetenceController";
-
+import { ApplicationController } from '../controllers/ApplicationController';
+import { authMiddleware } from '../middleware/middleware_auth';
+import { CompetenceController } from '../controllers/CompetenceController';
 
 const router = Router();
 const applicationController = new ApplicationController();
-const competenceController = new CompetenceController();    
+const competenceController = new CompetenceController();
 
 router.use(authMiddleware);
-
 
 /**
  * @openapi
@@ -44,7 +42,10 @@ router.get('/applications', applicationController.getAllApplications);
  *        404:
  *          description: Application not found
  */
-router.get('/applications/:application_id', applicationController.getApplicationDetailsById);
+router.get(
+  '/applications/:application_id',
+  applicationController.getApplicationDetailsById
+);
 
 /**
  * @openapi
@@ -76,7 +77,10 @@ router.get('/applications/:application_id', applicationController.getApplication
  *        404:
  *          description: Application not found
  */
-router.put('/applications/:application_id/status', applicationController.updateApplicationStatus);
+router.put(
+  '/applications/:application_id/status',
+  applicationController.updateApplicationStatus
+);
 
 /**
  * @openapi
@@ -140,7 +144,4 @@ router.post('/applications/submit', applicationController.submitApplication);
  */
 router.get('/competences', competenceController.getAllCompetence);
 
-
-
-
-export default router; 
+export default router;

@@ -13,10 +13,10 @@ const sequelize = new Sequelize(process.env.DATABASE_URL as string, {
   dialectOptions: {
     ssl: {
       require: true,
-      rejectUnauthorized: false, // Required for Heroku
-    },
+      rejectUnauthorized: false // Required for Heroku
+    }
   },
-  logging: false, // Disable logging for cleaner output
+  logging: false // Disable logging for cleaner output
 });
 
 export async function initDb() {
@@ -25,6 +25,5 @@ export async function initDb() {
   await sequelize.sync({ alter: true });
   console.log('Database models synchronized successfully.');
 }
-
 
 export default sequelize;
