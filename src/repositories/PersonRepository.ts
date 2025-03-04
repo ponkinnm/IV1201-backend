@@ -1,17 +1,12 @@
-
 import { IPersonRepository } from "./contracts/IPersonRepository";
 import { Person, Role } from "../models";
 import {PersonDTO} from '../models/PersonDTO';
 import { Validators } from "../util/validator";
 
-
-
-
 /**
  * Repository class for handling person/user-related database operations
  */
 export class PersonRepository implements IPersonRepository {
-
 
     /**
      * Finds a user by their username
@@ -80,9 +75,9 @@ export class PersonRepository implements IPersonRepository {
      * @param {string} username - The user's username
      * @param {string} password - The user's password
      * @param {number} role_id - The user's role ID
-     * @returns {Promise<PersonDTO>} A promise that resolves with the created user's details
+     * @returns {Promise<Person>} A promise that resolves with the created user's details
      */
-    async addNewUser(name: string, surname:string, pnr: string, email: string, username:string, password: string, role_id :number){
+    async addNewUser(name: string, surname: string, pnr: string, email: string, username: string, password: string, role_id: number){
 
         Validators.isName(name, "name");
         Validators.isName(surname, "surname");
@@ -92,17 +87,7 @@ export class PersonRepository implements IPersonRepository {
         Validators.isValidPassword(password);
         Validators.isValidId(role_id, "role_id");
 
-        const person = await Person.create(
-            {
-                name : name,
-                surname : surname,
-                pnr : pnr,
-                username : username,
-                password : password,
-                role_id : role_id
-            }
-        );
-        return person;
+        return await Person.create({ name, surname, pnr, email, username, password, role_id });
     }
   
     /**
