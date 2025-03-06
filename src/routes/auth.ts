@@ -2,9 +2,8 @@ import { Router } from 'express';
 import { AuthController } from '../controllers/AuthController';
 import { AuthService } from '../services/AuthService';
 import { PersonRepository } from '../repositories/PersonRepository';
-import { MockPersonRepository } from "../repositories/MockPersonRepository";
-import { PersonService } from "../services/PersonService";
-
+import { MockPersonRepository } from '../repositories/MockPersonRepository';
+import { PersonService } from '../services/PersonService';
 
 export const authRouter = Router();
 const personRepository =
@@ -43,16 +42,15 @@ const authController = new AuthController(authService, personService);
  */
 authRouter.post('/login', authController.login);
 
-
 /**
  *  @openapi
  *  /auth/signup:
  *    post:
- *      summary: Create a new user 
+ *      summary: Create a new user
  *      requestBody:
  *        required: true
  *        content:
- *          application/json: 
+ *          application/json:
  *            schema:
  *              type: object
  *              properties:
@@ -86,11 +84,65 @@ authRouter.post('/login', authController.login);
 
 authRouter.post('/signup', authController.signup);
 
-
-// Add logout route
+/**
+ *  @openapi
+ *  /auth/logout:
+ *    post:
+ *      summary: Logs a user out
+ *      responses:
+ *        200:
+ *          description: User successfully logged out
+ *        401:
+ *          description: Unauthorized access
+ */
 authRouter.post('/logout', authController.logout);
 
+/**
+ *  @openapi
+ *  /auth/forgotpassword:
+ *    post:
+ *      summary: Forgot password
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                emailOrUsername:
+ *                  type: string
+ *                  description: The email or username of the user
+ *      responses:
+ *        200:
+ *          description: Recovery email sent successfully
+ *        401:
+ *          description: Invalid credentials, user not found
+ */
 authRouter.post('/forgotpassword', authController.forgotpassword);
-
+/**
+ *  @openapi
+ *  /auth/password:
+ *    put:
+ *      summary: Updates a user's password
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                person_id:
+ *                  type: integer
+ *                  description: The ID of the user
+ *                password:
+ *                  type: string
+ *                  description: The new password
+ *      responses:
+ *        200:
+ *          description: Password updated successfully
+ *        400:
+ *          description: Invalid data provided
+ *        404:
+ *          description: User not found
+ */
 authRouter.put('/password', authController.updatePassword);
-
