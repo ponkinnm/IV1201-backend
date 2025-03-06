@@ -11,7 +11,7 @@ class Application extends Model {
 
   // Associations
   declare person?: Person;
-  declare status?: Status;
+  declare status: Status;
 }
 
 Application.init(
