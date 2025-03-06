@@ -3,6 +3,11 @@ import sequelize from '../config/dbsetup';
 import Person from './Person';
 import Competence from './Competence';
 
+/**
+ * Represents the association between a person and a competence.
+ * Tracks how many years of experience a person has with a specific competence.
+ */
+
 class CompetenceProfile extends Model {
   declare competence_profile_id: number;
   declare person_id: number;
