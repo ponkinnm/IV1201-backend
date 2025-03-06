@@ -1,4 +1,5 @@
 import { IApplicationRepository } from '../repositories/contracts/IApplicationRepository';
+import { ConflictError } from '../errors/ConflictError';
 
 /**
  * Service class for handling application-related operations
@@ -43,10 +44,24 @@ export class ApplicationService {
    * Updates the status of an application
    * @param {number} application_id - The ID of the application to update
    * @param {number} new_status_id - The new status ID to set for the application
+   * @param {number} old_status_id - The old status ID to check before updating
    * @returns {Promise} A promise that resolves when the status is updated
    */
-  async updateApplicationStatus(application_id: number, new_status_id: number) {
+  async updateApplicationStatus(
+    application_id: number,
+    new_status_id: number,
+    old_status_id: number
+  ) {
     try {
+      const currentApplication =
+        await this.applicationRepository.getApplicationDetailsById(
+          application_id
+        );
+      if (currentApplication?.status_id !== old_status_id) {
+        throw new ConflictError(
+          `Application was updated by another user. Please refresh and try again.`
+        );
+      }
       return await this.applicationRepository.updateApplicationStatus(
         application_id,
         new_status_id

@@ -3,6 +3,7 @@ import { ApplicationRepository } from '../repositories/ApplicationRepository';
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import sequelize from '../config/dbsetup';
 import { AuthService } from '../services/AuthService';
+import { ConflictError } from '../errors/ConflictError';
 
 export class ApplicationController {
   private readonly applicationService: ApplicationService;
@@ -106,20 +107,25 @@ export class ApplicationController {
       }
       const application_id = parseInt(req.params.application_id, 10);
 
-      // Get new_status_id from the request body
-      const { new_status_id } = req.body;
+      const { new_status_id, old_status_id } = req.body;
 
       const updatedRow = await sequelize.transaction(async () => {
         return await this.applicationService.updateApplicationStatus(
           application_id,
-          new_status_id
+          new_status_id,
+          old_status_id
         );
       });
+
       if (!updatedRow) {
         res.status(404).json({ error: ' filed to update status ' });
       }
       res.status(200).json(updatedRow);
     } catch (err) {
+      if (err instanceof ConflictError) {
+        res.status(409).json({ error: err.message });
+        return;
+      }
       next(err);
     }
   };
@@ -161,10 +167,10 @@ export class ApplicationController {
           message: 'You have already submitted an application .'
         });
         return;
-      }          
-          res.status(200).json(submittedApplication);
-        }catch(err){
-          next(err);
-        }
-      };
+      }
+      res.status(200).json(submittedApplication);
+    } catch (err) {
+      next(err);
+    }
+  };
 }

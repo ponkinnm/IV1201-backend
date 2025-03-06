@@ -66,9 +66,12 @@ router.get(
  *            schema:
  *              type: object
  *              properties:
- *                status:
+ *                new_status_id:
  *                  type: integer
  *                  description: The new status_id for the application
+ *                old_status_id:
+ *                  type: integer
+ *                  description: The old status_id for the application
  *      responses:
  *        200:
  *          description: Application status updated successfully
@@ -76,6 +79,8 @@ router.get(
  *          description: Unauthorized access
  *        404:
  *          description: Application not found
+ *        409:
+ *          description: Application updated by other user
  */
 router.put(
   '/applications/:application_id/status',
