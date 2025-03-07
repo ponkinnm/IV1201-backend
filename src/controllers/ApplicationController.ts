@@ -5,6 +5,15 @@ import sequelize from '../config/dbsetup';
 import { AuthService } from '../services/AuthService';
 import { ConflictError } from '../errors/ConflictError';
 
+/**
+ * Controller handling application related requests.
+ * Manages operations related to an application:
+ * - Retrieving all applications (for recruiters)
+ * - Getting detailed information about specific applications (for recruiters)
+ * - Updating application status (for recruiters)
+ * - Submitting new applications (for applicants)
+ */
+
 export class ApplicationController {
   private readonly applicationService: ApplicationService;
   private readonly applicationRepository = new ApplicationRepository();

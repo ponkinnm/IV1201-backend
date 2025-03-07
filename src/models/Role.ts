@@ -2,6 +2,11 @@ import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/dbsetup';
 import Person from './Person';
 
+/**
+ * Represents a user role in the system.
+ * Defines authorization levels and permissions.
+ */
+
 class Role extends Model {
   declare role_id: number;
   declare name: string;

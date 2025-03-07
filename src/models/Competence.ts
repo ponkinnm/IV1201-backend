@@ -2,6 +2,11 @@ import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/dbsetup';
 import CompetenceProfile from './CompetenceProfile';
 
+/**
+ * Represents a skill or qualification that applicants can possess.
+ * Each competence is associated with a competenceProfile
+ */
+
 class Competence extends Model {
   declare competence_id: number;
   declare name: string;

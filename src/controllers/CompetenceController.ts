@@ -3,6 +3,11 @@ import { CompetenceRepository } from '../repositories/ComptenceRepository';
 import { CompetenceService } from '../services/CompetenceService';
 import { sequelize } from '../models';
 
+/**
+ * Controller handling competence-related requests.
+ * Main purpose is to provide a list of competences to be used dropdowns
+ */
+
 export class CompetenceController {
   private readonly competenceRepo = new CompetenceRepository();
   private readonly competenceService;

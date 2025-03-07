@@ -3,6 +3,14 @@ import sequelize from '../config/dbsetup';
 import Person from './Person';
 import Status from './Status';
 
+/**
+ * Represents a job application submitted by an applicant.
+ * Each application belongs to a specific person, has a status,
+ * and tracks when it was submitted. A person can only have one
+ * active application at a time (person_id is unique).
+ * Linked to person and status
+ */
+
 class Application extends Model {
   declare application_id: number;
   declare person_id: number;

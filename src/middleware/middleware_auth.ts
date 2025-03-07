@@ -13,8 +13,11 @@ declare global {
 }
 /* eslint-enable @typescript-eslint/no-namespace */
 
-// an alternative is to move this into its own file and export it as a module eg. express.d.ts
-
+/**
+ * Authentication middleware for Express routes.
+ * Verifies JWT tokens from cookies and attaches the user information to the request object.
+ * This middleware should be applied to routes that require the user to be authenticated
+ */
 export const authMiddleware = (
   req: Request,
   res: Response,

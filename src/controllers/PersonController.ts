@@ -2,7 +2,14 @@ import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { PersonRepository } from '../repositories/PersonRepository';
 import { PersonService } from '../services/PersonService';
 import sequelize from '../config/dbsetup';
-
+/**
+ * Controller handling person-related requests.
+ * Manages user operations including:
+ * - Creating new users
+ * - Updating user credentials (username/password)
+ * - Updating user email
+ * - Retrieving user details
+ */
 export class PersonController {
   private readonly personRepo: PersonRepository = new PersonRepository();
   private readonly personService: PersonService;
@@ -104,9 +111,6 @@ export class PersonController {
       next(err);
     }
   };
-
-
-
 
   /**
    * Handles GET request to retrieve user details by ID

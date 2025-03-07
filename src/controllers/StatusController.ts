@@ -3,6 +3,11 @@ import { StatusService } from '../services/StatusService';
 import sequelize from '../config/dbsetup';
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 
+/**
+ * Controller handling status-related requests.
+ * Main purpose is to provide a list of statuses to be used in dropdowns
+ */
+
 export class StatusController {
   private readonly statusRepo: StatusRepository = new StatusRepository();
   private readonly statusService: StatusService;
