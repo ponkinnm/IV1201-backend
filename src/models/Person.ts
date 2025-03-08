@@ -31,7 +31,7 @@ class Person extends Model {
   /**
    * Validates if the provided password matches the user's hashed password
    * @param {string} password - The password to validate
-   * @returns {Promise<boolean>} True if password matchess otherwise false
+   * @returns {Promise<boolean>} True if password matches otherwise false
    */
   async validatePassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);

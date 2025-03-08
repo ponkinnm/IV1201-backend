@@ -61,7 +61,8 @@ export class AuthController {
       res.json({
         username: user.username,
         name: user.name,
-        id: user.person_id
+        id: user.person_id,
+        role_id: user.role_id
       });
     } catch (err) {
       next(err);
@@ -69,7 +70,7 @@ export class AuthController {
   };
 
   /**
-   * function to hanlde user log out
+   * function to handle user log out
    */
   logout: RequestHandler = async (
     req: Request,
@@ -128,9 +129,7 @@ export class AuthController {
   };
 
   /**
-   * Handles post request to varify a user
-   * @async
-   * @function varifyUser
+   * Handles password recovery requests
    * @param {Request} req - Express request object containing email or username
    * @param {Response} res - Express response object
    * @param {NextFunction} next - Express next function for error handling
@@ -150,7 +149,7 @@ export class AuthController {
       });
 
       if (!person) {
-        res.status(401).send('invalid credential, user not foud');
+        res.status(401).send('invalid credential, user not found');
       }
 
       res.status(200).send('A mail was sent, check your inbox');
