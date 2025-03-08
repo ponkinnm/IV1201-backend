@@ -16,7 +16,7 @@ describe('ApplicationController', () => {
   let next: NextFunction;
   let controller: ApplicationController;
   let mockApplicationService: jest.Mocked<ApplicationService>;
-
+  let transactionSpy: jest.SpyInstance;
   const mockedAuthService = jest.mocked(AuthService, { shallow: true });
   const mockedDb = jest.mocked(sequelize, { shallow: true });
 
@@ -35,6 +35,14 @@ describe('ApplicationController', () => {
       getApplicationDetailsById: jest.fn()
     } as Partial<ApplicationService> as jest.Mocked<ApplicationService>;
     controller = new ApplicationController(mockApplicationService);
+
+    transactionSpy = jest
+      .spyOn(mockedDb, 'transaction')
+      .mockImplementation(async (callback: never) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        return await callback();
+      });
 
     // Reset mocks between tests
     jest.clearAllMocks();
@@ -60,14 +68,6 @@ describe('ApplicationController', () => {
         { application_id: 1 },
         { application_id: 2 }
       ] as ApplicationDTO[];
-      // Simulate a successful transaction
-      const transactionSpy = jest
-        .spyOn(mockedDb, 'transaction')
-        .mockImplementation(async (callback: never) => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          return await callback();
-        });
       mockApplicationService.getAllApplications.mockResolvedValue(
         fakeApplications
       );
@@ -75,7 +75,7 @@ describe('ApplicationController', () => {
       await controller.getAllApplications(req, res, next);
 
       expect(AuthService.isRecruiter).toHaveBeenCalledWith(req.user);
-      expect(transactionSpy).toHaveBeenCalled();
+      expect(transactionSpy).toHaveBeenCalledTimes(1);
       expect(mockApplicationService.getAllApplications).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith(fakeApplications);
@@ -100,20 +100,13 @@ describe('ApplicationController', () => {
       req.params = { application_id: application_id.toString() };
 
       mockedAuthService.isRecruiter.mockReturnValue(true);
-      const transactionSpy = jest
-        .spyOn(mockedDb, 'transaction')
-        .mockImplementation(async (callback: never) => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          return await callback();
-        });
       mockApplicationService.getApplicationDetailsById.mockResolvedValue(
         undefined
       );
 
       await controller.getApplicationDetailsById(req, res, next);
 
-      expect(transactionSpy).toHaveBeenCalled();
+      expect(transactionSpy).toHaveBeenCalledTimes(1);
       expect(res.status).toHaveBeenCalledWith(404);
       expect(res.json).toHaveBeenCalledWith({ error: 'Application not found' });
     });
@@ -126,13 +119,6 @@ describe('ApplicationController', () => {
       const fakeApplicationDetails = {
         application_id: 1
       } as ApplicationDetailsDTO;
-      const transactionSpy = jest
-        .spyOn(mockedDb, 'transaction')
-        .mockImplementation(async (callback: never) => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          return await callback();
-        });
 
       mockApplicationService.getApplicationDetailsById.mockResolvedValue(
         fakeApplicationDetails
@@ -140,7 +126,7 @@ describe('ApplicationController', () => {
 
       await controller.getApplicationDetailsById(req, res, next);
 
-      expect(transactionSpy).toHaveBeenCalled();
+      expect(transactionSpy).toHaveBeenCalledTimes(1);
       expect(res.json).toHaveBeenCalledWith(fakeApplicationDetails);
     });
   });
