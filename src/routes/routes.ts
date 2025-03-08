@@ -2,9 +2,13 @@ import { Router } from 'express';
 import { ApplicationController } from '../controllers/ApplicationController';
 import { authMiddleware } from '../middleware/middleware_auth';
 import { CompetenceController } from '../controllers/CompetenceController';
+import { ApplicationService } from '../services/ApplicationService';
+import { ApplicationRepository } from '../repositories/ApplicationRepository';
 
 const router = Router();
-const applicationController = new ApplicationController();
+const applicationRepository = new ApplicationRepository();
+const applicationService = new ApplicationService(applicationRepository);
+const applicationController = new ApplicationController(applicationService);
 const competenceController = new CompetenceController();
 
 router.use(authMiddleware);

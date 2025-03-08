@@ -1,5 +1,4 @@
 import { ApplicationService } from '../services/ApplicationService';
-import { ApplicationRepository } from '../repositories/ApplicationRepository';
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import sequelize from '../config/dbsetup';
 import { AuthService } from '../services/AuthService';
@@ -16,12 +15,9 @@ import { ConflictError } from '../errors/ConflictError';
 
 export class ApplicationController {
   private readonly applicationService: ApplicationService;
-  private readonly applicationRepository = new ApplicationRepository();
 
-  constructor() {
-    this.applicationService = new ApplicationService(
-      this.applicationRepository
-    );
+  constructor(applicationService: ApplicationService) {
+    this.applicationService = applicationService;
   }
 
   /**
