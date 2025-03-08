@@ -4,6 +4,7 @@ import { AuthService } from '../src/services/AuthService';
 import { ApplicationService } from '../src/services/ApplicationService';
 import sequelize from '../src/config/dbsetup';
 import { ApplicationDTO } from '../src/models/ApplicationDTO';
+import { ApplicationDetailsDTO } from '../src/models/ApplicationDetailsDTO';
 
 jest.mock('../src/services/AuthService');
 jest.mock('../src/services/ApplicationService');
@@ -115,6 +116,32 @@ describe('ApplicationController', () => {
       expect(transactionSpy).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(404);
       expect(res.json).toHaveBeenCalledWith({ error: 'Application not found' });
+    });
+    it('should return applicationDetails if authorized as recruiter', async () => {
+      mockedAuthService.isRecruiter.mockReturnValue(true);
+      const application_id = 1;
+      req.params = {
+        application_id: application_id.toString()
+      };
+      const fakeApplicationDetails = {
+        application_id: 1
+      } as ApplicationDetailsDTO;
+      const transactionSpy = jest
+        .spyOn(mockedDb, 'transaction')
+        .mockImplementation(async (callback: never) => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
+          return await callback();
+        });
+
+      mockApplicationService.getApplicationDetailsById.mockResolvedValue(
+        fakeApplicationDetails
+      );
+
+      await controller.getApplicationDetailsById(req, res, next);
+
+      expect(transactionSpy).toHaveBeenCalled();
+      expect(res.json).toHaveBeenCalledWith(fakeApplicationDetails);
     });
   });
 });
