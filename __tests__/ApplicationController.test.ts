@@ -49,45 +49,45 @@ describe('ApplicationController', () => {
       expect(res.status).toHaveBeenCalledWith(401);
       expect(res.json).toHaveBeenCalledWith({ error: 'Unauthorized' });
     });
-  });
-  //
-  it('should return applications with status 200 if user is a recruiter', async () => {
-    // Simulate authorized user
-    mockedAuthService.isRecruiter.mockReturnValue(true);
-    const fakeApplications = [
-      { application_id: 1 },
-      { application_id: 2 }
-    ] as ApplicationDTO[];
-    // Simulate a successful transaction
-    const transactionSpy = jest
-      .spyOn(mockedDb, 'transaction')
-      .mockImplementation(async (callback: never) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
-        return await callback();
-      });
-    mockApplicationService.getAllApplications.mockResolvedValue(
-      fakeApplications
-    );
+    //
+    it('should return applications with status 200 if user is a recruiter', async () => {
+      // Simulate authorized user
+      mockedAuthService.isRecruiter.mockReturnValue(true);
+      const fakeApplications = [
+        { application_id: 1 },
+        { application_id: 2 }
+      ] as ApplicationDTO[];
+      // Simulate a successful transaction
+      const transactionSpy = jest
+        .spyOn(mockedDb, 'transaction')
+        .mockImplementation(async (callback: never) => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
+          return await callback();
+        });
+      mockApplicationService.getAllApplications.mockResolvedValue(
+        fakeApplications
+      );
 
-    await controller.getAllApplications(req, res, next);
+      await controller.getAllApplications(req, res, next);
 
-    expect(AuthService.isRecruiter).toHaveBeenCalledWith(req.user);
-    expect(transactionSpy).toHaveBeenCalled();
-    expect(mockApplicationService.getAllApplications).toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith(fakeApplications);
-  });
-
-  it('should call next with error when an exception occurs', async () => {
-    mockedAuthService.isRecruiter.mockReturnValue(true);
-    const error = new Error('Test error');
-    jest.spyOn(mockedDb, 'transaction').mockImplementation(async () => {
-      throw error;
+      expect(AuthService.isRecruiter).toHaveBeenCalledWith(req.user);
+      expect(transactionSpy).toHaveBeenCalled();
+      expect(mockApplicationService.getAllApplications).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(fakeApplications);
     });
 
-    await controller.getAllApplications(req, res, next);
+    it('should call next with error when an exception occurs', async () => {
+      mockedAuthService.isRecruiter.mockReturnValue(true);
+      const error = new Error('Test error');
+      jest.spyOn(mockedDb, 'transaction').mockImplementation(async () => {
+        throw error;
+      });
 
-    expect(next).toHaveBeenCalledWith(error);
+      await controller.getAllApplications(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
   });
 });
