@@ -149,7 +149,7 @@ export class AuthController {
       });
 
       if (!person) {
-        res.status(401).send('invalid credential, user not foud');
+        res.status(401).send('invalid credential, user not found');
       }
 
       res.status(200).send('A mail was sent, check your inbox');

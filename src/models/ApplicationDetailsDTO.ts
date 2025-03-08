@@ -3,7 +3,7 @@ import { CompetenceProfileDTO } from './CompetenceProfileDTO';
 import { PersonDTO } from './PersonDTO';
 
 /**
- * This class is an object contain application details for an sepecific applicant
+ * Represents application details for a specific applicant
  */
 export class ApplicationDetailsDTO {
   application_id: number;
