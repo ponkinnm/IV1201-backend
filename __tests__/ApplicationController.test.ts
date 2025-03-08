@@ -70,14 +70,24 @@ describe('ApplicationController', () => {
       fakeApplications
     );
 
-    // Act
     await controller.getAllApplications(req, res, next);
 
-    // Assert
     expect(AuthService.isRecruiter).toHaveBeenCalledWith(req.user);
     expect(transactionSpy).toHaveBeenCalled();
     expect(mockApplicationService.getAllApplications).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith(fakeApplications);
+  });
+
+  it('should call next with error when an exception occurs', async () => {
+    mockedAuthService.isRecruiter.mockReturnValue(true);
+    const error = new Error('Test error');
+    jest.spyOn(mockedDb, 'transaction').mockImplementation(async () => {
+      throw error;
+    });
+
+    await controller.getAllApplications(req, res, next);
+
+    expect(next).toHaveBeenCalledWith(error);
   });
 });
