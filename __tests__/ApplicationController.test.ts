@@ -30,12 +30,14 @@ describe('ApplicationController', () => {
 
     // Create an instance of ApplicationController with a mock service
     mockApplicationService = {
-      getAllApplications: jest.fn()
+      getAllApplications: jest.fn(),
+      getApplicationDetailsById: jest.fn()
     } as Partial<ApplicationService> as jest.Mocked<ApplicationService>;
     controller = new ApplicationController(mockApplicationService);
 
     // Reset mocks between tests
     jest.clearAllMocks();
+    jest.restoreAllMocks();
   });
 
   describe('getAllApplications', () => {
@@ -88,6 +90,31 @@ describe('ApplicationController', () => {
       await controller.getAllApplications(req, res, next);
 
       expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+
+  describe('getApplicationDetailsById', () => {
+    it('should return 404 if application is not found', async () => {
+      const application_id = 1;
+      req.params = { application_id: application_id.toString() };
+
+      mockedAuthService.isRecruiter.mockReturnValue(true);
+      const transactionSpy = jest
+        .spyOn(mockedDb, 'transaction')
+        .mockImplementation(async (callback: never) => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
+          return await callback();
+        });
+      mockApplicationService.getApplicationDetailsById.mockResolvedValue(
+        undefined
+      );
+
+      await controller.getApplicationDetailsById(req, res, next);
+
+      expect(transactionSpy).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith({ error: 'Application not found' });
     });
   });
 });
