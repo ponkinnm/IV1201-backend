@@ -2,15 +2,22 @@ import { Request, Response, NextFunction } from 'express';
 import { ApplicationController } from '../src/controllers/ApplicationController';
 import { AuthService } from '../src/services/AuthService';
 import { ApplicationService } from '../src/services/ApplicationService';
+import sequelize from '../src/config/dbsetup';
+import { ApplicationDTO } from '../src/models/ApplicationDTO';
 
 jest.mock('../src/services/AuthService');
 jest.mock('../src/services/ApplicationService');
+jest.mock('../src/config/dbsetup');
 
 describe('ApplicationController', () => {
   let req: Request;
   let res: Response;
   let next: NextFunction;
   let controller: ApplicationController;
+  let mockApplicationService: jest.Mocked<ApplicationService>;
+
+  const mockedAuthService = jest.mocked(AuthService, { shallow: true });
+  const mockedDb = jest.mocked(sequelize, { shallow: true });
 
   beforeEach(() => {
     req = { user: {} } as Partial<Request> as Request;
@@ -22,9 +29,9 @@ describe('ApplicationController', () => {
     next = jest.fn();
 
     // Create an instance of ApplicationController with a mock service
-    const mockApplicationService = {
+    mockApplicationService = {
       getAllApplications: jest.fn()
-    } as Partial<ApplicationService> as ApplicationService;
+    } as Partial<ApplicationService> as jest.Mocked<ApplicationService>;
     controller = new ApplicationController(mockApplicationService);
 
     // Reset mocks between tests
@@ -34,7 +41,6 @@ describe('ApplicationController', () => {
   describe('getAllApplications', () => {
     it('should return 401 if user is not a recruiter', async () => {
       // Simulate non-recruiter user
-      const mockedAuthService = jest.mocked(AuthService, { shallow: true });
       mockedAuthService.isRecruiter.mockReturnValue(false);
 
       await controller.getAllApplications(req, res, next);
@@ -43,5 +49,35 @@ describe('ApplicationController', () => {
       expect(res.status).toHaveBeenCalledWith(401);
       expect(res.json).toHaveBeenCalledWith({ error: 'Unauthorized' });
     });
+  });
+  //
+  it('should return applications with status 200 if user is a recruiter', async () => {
+    // Simulate authorized user
+    mockedAuthService.isRecruiter.mockReturnValue(true);
+    const fakeApplications = [
+      { application_id: 1 },
+      { application_id: 2 }
+    ] as ApplicationDTO[];
+    // Simulate a successful transaction
+    const transactionSpy = jest
+      .spyOn(mockedDb, 'transaction')
+      .mockImplementation(async (callback: never) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        return await callback();
+      });
+    mockApplicationService.getAllApplications.mockResolvedValue(
+      fakeApplications
+    );
+
+    // Act
+    await controller.getAllApplications(req, res, next);
+
+    // Assert
+    expect(AuthService.isRecruiter).toHaveBeenCalledWith(req.user);
+    expect(transactionSpy).toHaveBeenCalled();
+    expect(mockApplicationService.getAllApplications).toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith(fakeApplications);
   });
 });
