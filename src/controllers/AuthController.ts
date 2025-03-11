@@ -3,6 +3,7 @@ import sequelize from '../config/dbsetup';
 import { AuthService } from '../services/AuthService';
 import { PersonService } from '../services/PersonService';
 import { PersonDTO } from '../models/PersonDTO';
+import { validationResult } from 'express-validator';
 /**
  * Controller handling all authentication related requests.
  * Manages user authentication operations including:
@@ -95,6 +96,11 @@ export class AuthController {
     next: NextFunction
   ): Promise<void> => {
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        res.status(400).json({ errors: errors.array() });
+        return;
+      }
       const { name, surname, pnr, email, username, password, role_id } =
         req.body;
 
