@@ -35,6 +35,11 @@ export class AuthController {
     next: NextFunction
   ): Promise<void> => {
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        res.status(400).json({ errors: errors.array() });
+        return;
+      }
       const { username, password } = req.body;
       if (!username || !password) {
         res.status(400).send('Missing username or password');
