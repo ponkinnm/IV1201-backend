@@ -5,12 +5,16 @@ import { CompetenceController } from '../controllers/CompetenceController';
 import { ApplicationService } from '../services/ApplicationService';
 import { ApplicationRepository } from '../repositories/ApplicationRepository';
 import { body } from 'express-validator';
+import { CompetenceRepository } from '../repositories/ComptenceRepository';
+import { CompetenceService } from '../services/CompetenceService';
 
 const router = Router();
 const applicationRepository = new ApplicationRepository();
 const applicationService = new ApplicationService(applicationRepository);
 const applicationController = new ApplicationController(applicationService);
-const competenceController = new CompetenceController();
+const competenceRepository = new CompetenceRepository();
+const competenceService = new CompetenceService(competenceRepository);
+const competenceController = new CompetenceController(competenceService);
 
 router.use(authMiddleware);
 

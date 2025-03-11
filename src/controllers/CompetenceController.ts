@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
-import { CompetenceRepository } from '../repositories/ComptenceRepository';
 import { CompetenceService } from '../services/CompetenceService';
-import { sequelize } from '../models';
+import sequelize from '../config/dbsetup';
 
 /**
  * Controller handling competence-related requests.
@@ -9,11 +8,10 @@ import { sequelize } from '../models';
  */
 
 export class CompetenceController {
-  private readonly competenceRepo = new CompetenceRepository();
   private readonly competenceService;
 
-  constructor() {
-    this.competenceService = new CompetenceService(this.competenceRepo);
+  constructor(competenceService: CompetenceService) {
+    this.competenceService = competenceService;
   }
 
   /**
