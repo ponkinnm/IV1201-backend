@@ -4,6 +4,7 @@ import { AuthService } from '../services/AuthService';
 import { PersonRepository } from '../repositories/PersonRepository';
 import { MockPersonRepository } from '../repositories/MockPersonRepository';
 import { PersonService } from '../services/PersonService';
+import { body } from 'express-validator';
 
 export const authRouter = Router();
 const personRepository =
@@ -82,7 +83,16 @@ authRouter.post('/login', authController.login);
  *          description: Missing data or incorrect format of data
  */
 
-authRouter.post('/signup', authController.signup);
+authRouter.post(
+  '/signup',
+  [
+    body('email').isEmail().normalizeEmail(),
+    body('name').isString().trim().escape().isLength({ min: 3 }),
+    body('pnr').isLength({ min: 10, max: 12 }).toInt(),
+    body('password').isString().isLength({ min: 6 })
+  ],
+  authController.signup
+);
 
 /**
  *  @openapi

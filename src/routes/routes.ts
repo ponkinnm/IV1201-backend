@@ -4,7 +4,6 @@ import { authMiddleware } from '../middleware/middleware_auth';
 import { CompetenceController } from '../controllers/CompetenceController';
 import { ApplicationService } from '../services/ApplicationService';
 import { ApplicationRepository } from '../repositories/ApplicationRepository';
-import { body } from 'express-validator';
 
 const router = Router();
 const applicationRepository = new ApplicationRepository();
@@ -139,16 +138,7 @@ router.put(
  *        400:
  *          description: Missing or invalid data
  */
-router.post(
-  '/applications/submit',
-  [
-    body('email').isEmail().normalizeEmail(),
-    body('name').isString().trim().escape().isLength({ min: 3 }),
-    body('pnr').isLength({ min: 10, max: 12 }).toInt(),
-    body('password').isString().isLength({ min: 6 })
-  ],
-  applicationController.submitApplication
-);
+router.post('/applications/submit', applicationController.submitApplication);
 
 /**
  * @openapi
