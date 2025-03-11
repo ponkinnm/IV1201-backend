@@ -41,7 +41,14 @@ const authController = new AuthController(authService, personService);
  *        401:
  *          description: Invalid username or password
  */
-authRouter.post('/login', authController.login);
+authRouter.post(
+  '/login',
+  [
+    body('username').isString().isLength({ min: 3 }),
+    body('password').isString().isLength({ min: 6 })
+  ],
+  authController.login
+);
 
 /**
  *  @openapi

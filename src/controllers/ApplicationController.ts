@@ -3,6 +3,7 @@ import { Request, Response, NextFunction, RequestHandler } from 'express';
 import sequelize from '../config/dbsetup';
 import { AuthService } from '../services/AuthService';
 import { ConflictError } from '../errors/ConflictError';
+import { validationResult } from 'express-validator';
 
 /**
  * Controller handling application related requests.
@@ -110,6 +111,11 @@ export class ApplicationController {
         res.status(401).json({ error: 'Unauthorized' });
         return;
       }
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        res.status(400).json({ errors: errors.array() });
+        return;
+      }
       const application_id = parseInt(req.params.application_id, 10);
 
       const { new_status_id, old_status_id } = req.body;
@@ -152,6 +158,11 @@ export class ApplicationController {
     next: NextFunction
   ): Promise<void> => {
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        res.status(400).json({ errors: errors.array() });
+        return;
+      }
       // Get person_id from the authenticated user instead of request body
       const person_id = req.user!.person_id;
 

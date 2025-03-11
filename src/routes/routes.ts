@@ -4,6 +4,7 @@ import { authMiddleware } from '../middleware/middleware_auth';
 import { CompetenceController } from '../controllers/CompetenceController';
 import { ApplicationService } from '../services/ApplicationService';
 import { ApplicationRepository } from '../repositories/ApplicationRepository';
+import { body } from 'express-validator';
 
 const router = Router();
 const applicationRepository = new ApplicationRepository();
@@ -88,6 +89,10 @@ router.get(
  */
 router.put(
   '/applications/:application_id/status',
+  [
+    body('new_status_id').isInt({ min: 1 }).withMessage('Invalid status ID'),
+    body('old_status_id').isInt({ min: 1 }).withMessage('Invalid status ID')
+  ],
   applicationController.updateApplicationStatus
 );
 
@@ -138,7 +143,41 @@ router.put(
  *        400:
  *          description: Missing or invalid data
  */
-router.post('/applications/submit', applicationController.submitApplication);
+router.post(
+  '/applications/submit',
+  [
+    body('availabilities')
+      .isArray({ min: 1 })
+      .withMessage('You should specify at least one availability period')
+      .contains({ from_date: Date, to_date: Date })
+      .custom((value) => {
+        value.forEach((date: { from_date: string; to_date: string }) => {
+          if (date.from_date > date.to_date) {
+            throw new Error('From date should be before to date');
+          }
+          if (new Date(date.from_date) < new Date()) {
+            throw new Error('From date should be in the future');
+          }
+        });
+        return true;
+      }),
+    body('competenceProfile')
+      .isArray({ min: 1 })
+      .withMessage('You should specify at least one competence')
+      .contains({ competence_id: Number, years_of_experience: Number })
+      .custom((value) => {
+        value.forEach(
+          (comp: { competence_id: number; years_of_experience: number }) => {
+            if (comp.years_of_experience < 0 || comp.years_of_experience > 99) {
+              throw new Error('Years of experience should be a number 0-99');
+            }
+          }
+        );
+        return true;
+      })
+  ],
+  applicationController.submitApplication
+);
 
 /**
  * @openapi
