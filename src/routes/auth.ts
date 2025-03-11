@@ -88,7 +88,7 @@ authRouter.post(
   [
     body('email').isEmail().normalizeEmail(),
     body('name').isString().trim().escape().isLength({ min: 3 }),
-    body('pnr').isLength({ min: 10, max: 12 }).toInt(),
+    body('pnr').isLength({ min: 10, max: 12 }),
     body('password').isString().isLength({ min: 6 })
   ],
   authController.signup
