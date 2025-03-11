@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { CompetenceService } from '../services/CompetenceService';
-import { sequelize } from '../models';
+import sequelize from '../config/dbsetup';
 
 /**
  * Controller handling competence-related requests.
@@ -10,8 +10,8 @@ import { sequelize } from '../models';
 export class CompetenceController {
   private readonly competenceService;
 
-  constructor(competenceSevice: CompetenceService) {
-    this.competenceService = competenceSevice;
+  constructor(competenceService: CompetenceService) {
+    this.competenceService = competenceService;
   }
 
   /**

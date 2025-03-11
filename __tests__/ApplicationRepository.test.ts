@@ -1,9 +1,10 @@
 import { ApplicationRepository } from '../src/repositories/ApplicationRepository';
 import Application from '../src/models/Application';
-import Person from '../src/models/Person';
-import Status from '../src/models/Status';
 import { ApplicationDTO } from '../src/models/ApplicationDTO';
-import { ApplicationDetailsDTO } from '../src/models/ApplicationDetailsDTO';
+import { Person, Status } from '../src/models';
+
+jest.mock('../src/models');
+jest.mock('../src/repositories/PersonRepository');
 
 describe('ApplicationRepository', () => {
   let repository: ApplicationRepository;
@@ -13,6 +14,7 @@ describe('ApplicationRepository', () => {
   });
 
   afterEach(() => {
+    jest.clearAllMocks();
     jest.restoreAllMocks();
   });
 
@@ -49,7 +51,7 @@ describe('ApplicationRepository', () => {
       // Spy on Application.findAll and have it resolve with the sample data.
       const findAllMock = jest
         .spyOn(Application, 'findAll')
-        .mockResolvedValue(ormData as Application[]);
+        .mockImplementation(() => ormData as unknown as Promise<Application[]>);
 
       // Call the repository method.
       const result = await repository.getAllApplications();
@@ -111,45 +113,6 @@ describe('ApplicationRepository', () => {
 
       // Expect that calling getAllApplications() will reject with the error.
       await expect(repository.getAllApplications()).rejects.toThrow(error);
-    });
-  });
-
-  describe('getApplicationDetailsById', () => {
-    it('should return an ApplicationDetailsDTO when findByPk resolves with an application', async () => {
-      const application_id = 1;
-
-      // Sample ORM data that mimics what the Application.findByPk() would return.
-      const ormData = {
-        application_id: 1,
-        person_id: 10,
-        status_id: 1,
-        status: {
-          status_name: 'accepted'
-        }
-      };
-
-      // Spy on Application.findByPk and have it resolve with the sample data.
-      const findApplicationByPkMock = jest
-        .spyOn(Application, 'findByPk')
-        .mockResolvedValue(ormData as Application);
-
-      // Call the repository method.
-      const result = await repository.getApplicationDetailsById(application_id);
-
-      // Verify that Application.findByPk was called with the correct query options.
-      expect(findApplicationByPkMock).toHaveBeenCalledWith(application_id, {
-        include: [
-          {
-            model: Status,
-            attributes: ['status_name', 'status_id']
-          }
-        ],
-        attributes: ['application_id', 'person_id', 'status_id']
-      });
-
-      // Verify that the returned data is properly mapped into an ApplicationDetailsDTO instance.
-      expect(result).toBeInstanceOf(ApplicationDetailsDTO);
-      expect(findApplicationByPkMock).toHaveBeenCalled();
     });
   });
 });

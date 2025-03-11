@@ -13,6 +13,7 @@ import { PersonDTO } from '../src/models/PersonDTO';
 jest.mock('../src/services/AuthService');
 jest.mock('../src/services/ApplicationService');
 jest.mock('../src/config/dbsetup');
+jest.mock('express-validator');
 
 describe('ApplicationController', () => {
   let req: Request;
@@ -36,7 +37,9 @@ describe('ApplicationController', () => {
     // Create an instance of ApplicationController with a mock service
     mockApplicationService = {
       getAllApplications: jest.fn(),
-      getApplicationDetailsById: jest.fn()
+      getApplicationDetailsById: jest.fn(),
+      updateApplicationStatus: jest.fn(),
+      submitApplication: jest.fn()
     } as Partial<ApplicationService> as jest.Mocked<ApplicationService>;
     controller = new ApplicationController(mockApplicationService);
 
@@ -49,6 +52,11 @@ describe('ApplicationController', () => {
       });
 
     // Reset mocks between tests
+    jest.clearAllMocks();
+    jest.restoreAllMocks();
+  });
+
+  afterAll(() => {
     jest.clearAllMocks();
     jest.restoreAllMocks();
   });
@@ -104,6 +112,13 @@ describe('ApplicationController', () => {
       req.params = { application_id: application_id.toString() };
 
       mockedAuthService.isRecruiter.mockReturnValue(true);
+      const validationResultMock = jest.spyOn(
+        expressValidator,
+        'validationResult'
+      );
+      validationResultMock.mockReturnValue({
+        isEmpty: () => true
+      } as never);
       mockApplicationService.getApplicationDetailsById.mockResolvedValue(
         undefined
       );
@@ -153,7 +168,7 @@ describe('ApplicationController', () => {
         expressValidator,
         'validationResult'
       );
-      validationResultMock.mockReturnValue({
+      validationResultMock.mockReturnValueOnce({
         isEmpty: () => false,
         array: () => [{ msg: 'Invalid value' }]
       } as never);
@@ -193,6 +208,13 @@ describe('ApplicationController', () => {
       jest.spyOn(sequelize, 'transaction').mockImplementation(async () => {
         throw conflictError;
       });
+      const validationResultMock = jest.spyOn(
+        expressValidator,
+        'validationResult'
+      );
+      validationResultMock.mockReturnValue({
+        isEmpty: () => true
+      } as never);
 
       await controller.updateApplicationStatus(req, res, next);
 
@@ -247,6 +269,13 @@ describe('ApplicationController', () => {
         availabilities: [{ from_date: '2021-01-01', to_date: '2021-12-31' }]
       };
       req.user = { person_id: 1 } as PersonDTO;
+      const validationResultMock = jest.spyOn(
+        expressValidator,
+        'validationResult'
+      );
+      validationResultMock.mockReturnValue({
+        isEmpty: () => true
+      } as never);
       mockApplicationService.submitApplication.mockResolvedValue(undefined);
 
       await controller.submitApplication(req, res, next);
@@ -267,6 +296,13 @@ describe('ApplicationController', () => {
         availabilities: [{ from_date: '2021-01-01', to_date: '2021-12-31' }]
       };
       req.user = { person_id: 1 } as PersonDTO;
+      const validationResultMock = jest.spyOn(
+        expressValidator,
+        'validationResult'
+      );
+      validationResultMock.mockReturnValue({
+        isEmpty: () => true
+      } as never);
       mockApplicationService.submitApplication.mockResolvedValue(
         fakeSubmittedApplication
       );

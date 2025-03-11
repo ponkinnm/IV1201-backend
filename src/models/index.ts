@@ -1,4 +1,3 @@
-import sequelize from '../config/dbsetup';
 import Person from './Person';
 import Role from './Role';
 import Competence from './Competence';
@@ -40,7 +39,6 @@ Status.hasMany(Application, { foreignKey: 'status_id' });
 Application.belongsTo(Status, { foreignKey: 'status_id' });
 
 export {
-  sequelize,
   Person,
   Role,
   Competence,
